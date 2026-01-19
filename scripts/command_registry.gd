@@ -18,6 +18,11 @@ func register_builtin_commands():
 	register_command(WaitCommand.new())
 	register_command(WaitCancelCommand.new())
 	
+	# ★新規追加: ジャンプ系コマンド
+	register_command(JumpCommand.new())
+	register_command(CallCommand.new())
+	register_command(ReturnCommand.new())
+	
 	# オーディオコマンド
 	register_command(BgmCommand.new())
 	register_command(StopBgmCommand.new())

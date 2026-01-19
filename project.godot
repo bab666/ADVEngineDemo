@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="spelLDemo"
+config/name="EngineDemo"
 run/main_scene="res://scenes/title.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"

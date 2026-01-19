@@ -1,0 +1,8 @@
+res://scenes/game.tscn
+res://scripts/scenario_manager.gd
+res://scripts/commands/jump_command.gd
+res://scripts/commands/call_command.gd
+res://scripts/commands/return_command.gd
+res://scripts/command_registry.gd
+res://resources/scenarios/demo_scenario.txt
+res://resources/scenarios/demo_scene1.txt
