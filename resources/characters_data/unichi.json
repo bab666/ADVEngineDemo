@@ -1,0 +1,106 @@
+{
+	"character_id": "unichi",
+	"default_portrait": "normal",
+	"description": "",
+	"display_name": "ウニ",
+	"mirror": false,
+	"nicknames": [],
+	"portrait_offset": {
+		"x": 0.0,
+		"y": 0.0
+	},
+	"portrait_scale": 1.0,
+	"portraits": {
+		"": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": ""
+		},
+		"portrait_2": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+				"eyebrows": "res://resources/characters/alice_smile.png",
+				"eyes": "res://resources/characters/alice_smile.png"
+			},
+			"name": "portrait_2"
+		},
+		"portrait_3": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "portrait_3"
+		},
+		"portrait_4": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "portrait_4"
+		},
+		"portrait_5": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "portrait_5"
+		},
+		"portrait_7": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "portrait_7"
+		},
+		"portrait_8": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "portrait_8"
+		},
+		"portrait_9": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "portrait_9"
+		},
+		"smile": {
+			"base_image": "res://resources/characters/alice_normal.png",
+			"layer_offsets": {
+
+			},
+			"layers": {
+				"eyebrows": "res://resources/characters/alice_smile.png"
+			},
+			"name": "portrait_1"
+		}
+	}
+}

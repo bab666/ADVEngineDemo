@@ -1,0 +1,43 @@
+{
+	"character_id": "aris",
+	"default_portrait": "normal",
+	"description": "",
+	"display_name": "uuuu",
+	"mirror": false,
+	"nicknames": [],
+	"portrait_offset": {
+		"x": 0.0,
+		"y": 0.0
+	},
+	"portrait_scale": 1.0,
+	"portraits": {
+		"": {
+			"base_image": "",
+			"layers": {
+				"eyebrows": "res://resources/characters/alice_normal.png"
+			},
+			"name": ""
+		},
+		"portrait_1": {
+			"base_image": "res://resources/characters/alice_normal.png",
+			"layers": {
+
+			},
+			"name": "portrait_1"
+		},
+		"portrait_2": {
+			"base_image": "res://resources/characters/alice_normal.png",
+			"layers": {
+
+			},
+			"name": "portrait_2"
+		},
+		"portrait_3": {
+			"base_image": "",
+			"layers": {
+
+			},
+			"name": "portrait_3"
+		}
+	}
+}

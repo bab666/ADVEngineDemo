@@ -1,0 +1,25 @@
+{
+	"character_id": "uuuu",
+	"default_portrait": "normal",
+	"description": "",
+	"display_name": "",
+	"mirror": false,
+	"nicknames": [],
+	"portrait_offset": {
+		"x": 0.0,
+		"y": 0.0
+	},
+	"portrait_scale": 1.0,
+	"portraits": {
+		"portrait_1": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "portrait_1"
+		}
+	}
+}

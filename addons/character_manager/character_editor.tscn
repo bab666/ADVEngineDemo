@@ -1,0 +1,206 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm26vyxqxu8vs"]
+
+[ext_resource type="Script" uid="uid://bc1na0mlgso3e" path="res://addons/character_manager/character_editor_panel.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bhd4437vn0ftd" path="res://scripts/character_display.gd" id="2_display"]
+
+[node name="CharacterEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_script")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 300
+
+[node name="LeftPanel" type="Panel" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HSplitContainer/LeftPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label_General" type="Label" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+text = "■ 基本設定"
+
+[node name="General" type="VBoxContainer" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+
+[node name="HBox_ID" type="HBoxContainer" parent="HSplitContainer/LeftPanel/VBox/General"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/LeftPanel/VBox/General/HBox_ID"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "ID"
+
+[node name="CharacterID" type="LineEdit" parent="HSplitContainer/LeftPanel/VBox/General"]
+layout_mode = 2
+placeholder_text = "character_id (例: ai)"
+
+[node name="DisplayName" type="LineEdit" parent="HSplitContainer/LeftPanel/VBox/General"]
+layout_mode = 2
+placeholder_text = "表示名 (例: アイ)"
+
+[node name="Description" type="TextEdit" parent="HSplitContainer/LeftPanel/VBox/General"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+placeholder_text = "説明文..."
+
+[node name="HSeparator1" type="HSeparator" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+
+[node name="Label_Settings" type="Label" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+text = "■ 表示設定"
+
+[node name="Settings" type="VBoxContainer" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+
+[node name="HBox_Scale" type="HBoxContainer" parent="HSplitContainer/LeftPanel/VBox/Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/LeftPanel/VBox/Settings/HBox_Scale"]
+layout_mode = 2
+text = "Scale:"
+
+[node name="Scale" type="SpinBox" parent="HSplitContainer/LeftPanel/VBox/Settings"]
+layout_mode = 2
+step = 0.05
+value = 1.0
+
+[node name="Mirror" type="CheckBox" parent="HSplitContainer/LeftPanel/VBox/Settings"]
+layout_mode = 2
+text = "左右反転 (Mirror)"
+
+[node name="HSeparator4" type="HSeparator" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+
+[node name="Label_Preview" type="Label" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+text = "■ プレビュー設定"
+
+[node name="PreviewSettings" type="VBoxContainer" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+
+[node name="BgSelect" type="OptionButton" parent="HSplitContainer/LeftPanel/VBox/PreviewSettings"]
+layout_mode = 2
+item_count = 1
+selected = 0
+popup/item_0/text = "背景なし"
+popup/item_0/id = 0
+
+[node name="HSeparator2" type="HSeparator" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+
+[node name="Label_Portraits" type="Label" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+text = "■ 表情差分 (Portraits)"
+
+[node name="Portraits" type="VBoxContainer" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBox_Buttons" type="HBoxContainer" parent="HSplitContainer/LeftPanel/VBox/Portraits"]
+layout_mode = 2
+
+[node name="AddPortraitButton" type="Button" parent="HSplitContainer/LeftPanel/VBox/Portraits/HBox_Buttons"]
+layout_mode = 2
+text = "追加 (+)"
+
+[node name="SaveButton" type="Button" parent="HSplitContainer/LeftPanel/VBox/Portraits/HBox_Buttons"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "保存 (Save)"
+
+[node name="LoadButton" type="Button" parent="HSplitContainer/LeftPanel/VBox/Portraits/HBox_Buttons"]
+layout_mode = 2
+text = "読込 (Load)"
+
+[node name="List" type="ItemList" parent="HSplitContainer/LeftPanel/VBox/Portraits"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HSeparator3" type="HSeparator" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+
+[node name="Label_Edit" type="Label" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+text = "■ 表情編集"
+
+[node name="PortraitEdit" type="VBoxContainer" parent="HSplitContainer/LeftPanel/VBox"]
+layout_mode = 2
+
+[node name="PortraitName" type="LineEdit" parent="HSplitContainer/LeftPanel/VBox/PortraitEdit"]
+layout_mode = 2
+placeholder_text = "表情名 (例: smile)"
+
+[node name="BaseImage" type="Button" parent="HSplitContainer/LeftPanel/VBox/PortraitEdit"]
+layout_mode = 2
+text = "Base Image..."
+alignment = 0
+
+[node name="Layers" type="VBoxContainer" parent="HSplitContainer/LeftPanel/VBox/PortraitEdit"]
+layout_mode = 2
+
+[node name="RightPanel" type="Panel" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="Preview" type="SubViewportContainer" parent="HSplitContainer/RightPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="HSplitContainer/RightPanel/Preview"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="GrayBg" type="ColorRect" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="BackgroundPreview" type="Sprite2D" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
+centered = false
+
+[node name="CharacterDisplay" type="Node2D" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
+script = ExtResource("2_display")
+
+[node name="GuideFrame" type="ReferenceRect" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
+visible = false
+offset_right = 3840.0
+offset_bottom = 2160.0
+border_color = Color(1, 0, 0, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Camera2D" type="Camera2D" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
+position = Vector2(960, 540)

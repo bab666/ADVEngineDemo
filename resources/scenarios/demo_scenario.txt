@@ -1,0 +1,26 @@
+# D:\Works\Godot\spelLDemo\resources\scenarios\demo_scenario.txt
+# デモシナリオ
+
+@bg room
+@bgm peaceful_day volume=80 loop=true
+ナレーター:ある日の午後、部屋に一人の少女が立っていた。
+
+@chara unichi smile 1920 540
+アリス:こんにちは。私はアリス。
+アリス:このシステムのテストをしているの。
+
+@chara alice smile 1920 540
+アリス:うまく動いているかしら？
+
+@stopbgm time:2.0
+アリス:BGMをフェードアウトしてみるわ...
+
+@bgm tension volume=90 restart=true
+アリス:そして新しいBGMに切り替え！
+
+@stopbgm
+アリス:今度は即座に停止。
+
+@chara_hide alice
+ナレーター:アリスは微笑んで去っていった。
+ナレーター:デモはここで終了です。

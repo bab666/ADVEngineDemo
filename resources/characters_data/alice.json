@@ -1,0 +1,63 @@
+{
+	"character_id": "alice",
+	"default_portrait": "normal",
+	"description": "明るく元気な女の子",
+	"display_name": "アリス",
+	"mirror": false,
+	"nicknames": [
+		"アリちゃん"
+	],
+	"portrait_offset": {
+		"x": 0.0,
+		"y": 0.0
+	},
+	"portrait_scale": 1.0,
+	"portraits": {
+		"angry": {
+			"base_image": "res://resources/characters/alice_base.png",
+			"layer_offsets": {
+
+			},
+			"layers": {
+				"eyebrows": "res://resources/characters/alice_normal.png",
+				"eyes": "res://resources/characters/parts/alice_eyes_angry.png",
+				"mouth": "res://resources/characters/parts/alice_mouth_frown.png"
+			},
+			"name": "angry"
+		},
+		"normal": {
+			"base_image": "res://resources/characters/alice_base.png",
+			"layer_offsets": {
+
+			},
+			"layers": {
+				"eyebrows": "res://resources/characters/parts/alice_eyebrows_normal.png",
+				"eyes": "res://resources/characters/parts/alice_eyes_normal.png",
+				"mouth": "res://resources/characters/parts/alice_mouth_normal.png"
+			},
+			"name": "normal"
+		},
+		"portrait_5": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+				"eyebrows": "res://resources/characters/alice_smile.png"
+			},
+			"name": "portrait_5"
+		},
+		"smile": {
+			"base_image": "res://resources/characters/alice_base.png",
+			"layer_offsets": {
+
+			},
+			"layers": {
+				"eyebrows": "res://resources/characters/parts/alice_eyebrows_raised.png",
+				"eyes": "res://resources/characters/parts/alice_eyes_happy.png",
+				"mouth": "res://resources/characters/parts/alice_mouth_smile.png"
+			},
+			"name": "smile"
+		}
+	}
+}
