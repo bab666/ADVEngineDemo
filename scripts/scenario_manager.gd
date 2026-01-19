@@ -80,8 +80,10 @@ func _parse_chara_command(parts: Array) -> Dictionary:
 	
 	result["source_id"] = result["id"]
 	
+# 3番目以降の引数を解析
 	for i in range(3, parts.size()):
 		var param = parts[i]
+		
 		if param.begins_with("pos:"):
 			var val = param.substr(4)
 			if val == "auto":
@@ -89,9 +91,11 @@ func _parse_chara_command(parts: Array) -> Dictionary:
 			else:
 				result["pos_mode"] = "manual"
 				var coords = val.split(",")
-				result["pos"].x = float(coords[0]) if coords.size() > 0 else 0
-				result["pos"].y = float(coords[1]) if coords.size() > 1 else 0
-				result["pos"].z = float(coords[2]) if coords.size() > 2 else 0
+				# ★修正: else 0 を else 0.0 に変更 (float型に合わせる)
+				result["pos"].x = float(coords[0]) if coords.size() > 0 else 0.0
+				result["pos"].y = float(coords[1]) if coords.size() > 1 else 0.0
+				result["pos"].z = float(coords[2]) if coords.size() > 2 else 0.0
+		
 		elif "=" in param:
 			var kv = param.split("=", true, 1)
 			var key = kv[0]

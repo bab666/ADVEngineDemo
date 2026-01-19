@@ -5,17 +5,29 @@ extends Node
 @onready var background: TextureRect = $Background
 @onready var character_display: CharacterDisplay = $CharacterDisplay
 @onready var command_registry: CommandRegistry = $CommandRegistry
-
+# WindowManager (コードで生成して追加、またはシーンにあらかじめ配置)
+var window_manager: WindowManager
 # コマンド実行時のコンテキスト
 var command_context: Dictionary = {}
-
-# ★新規: 待ち時間管理用のTween
+# 待ち時間管理用のTween
 var wait_tween: Tween
 
 func _ready():
+	# WindowManagerのセットアップ
+	window_manager = WindowManager.new()
+	window_manager.name = "WindowManager"
+	add_child(window_manager)
+	
+# 既存のシーンにあるMessageWindowを "default" として登録してあげるとスムーズ
+	# ただし今回は「完全モジュール化」なので、既存の $UI/MessageWindow は
+	# WindowManagerによって管理されるか、削除して動的に生成するのが理想。
+	# 移行期間として、既存UIを隠す処理を入れておきます。
+	if has_node("UI/MessageWindow"):
+		$UI/MessageWindow.hide() 
+
 	# コマンドコンテキストを構築
 	command_context = {
-		"message_window": message_window,
+		"window_manager": window_manager, # ★ message_window の代わりにこれを渡す
 		"background": background,
 		"character_display": character_display,
 		"scenario_manager": scenario_manager,
@@ -28,7 +40,7 @@ func _ready():
 	
 	scenario_manager.scenario_line_changed.connect(_on_scenario_line_changed)
 	scenario_manager.scenario_finished.connect(_on_scenario_finished)
-	message_window.advance_requested.connect(_on_advance_requested)
+	window_manager.advance_requested.connect(_on_advance_requested)
 	
 	print("=== ゲーム開始 ===")
 	
@@ -62,7 +74,7 @@ func _on_advance_requested():
 
 func _on_scenario_finished():
 	print("全シナリオ終了")
-	message_window.hide_window()
+	window_manager.hide_all_windows()
 
 # --- ★新規追加: 待ち時間管理機能 ---
 

@@ -1,0 +1,21 @@
+{
+	"default": {
+		"scene_path": "res://scenes/ui/windows/default_window.tscn",
+		"pos": {"x": 0, "y": 1520},
+		"size": {"x": 3840, "y": 600},
+		"text_speed": 0.05,
+		"auto_advance": false,
+		"font_size": 48,
+		"name_font_size": 48,
+		"input_wait": true
+	},
+	"narrator": {
+		"scene_path": "res://scenes/ui/windows/simple_window.tscn",
+		"pos": {"x": 0, "y": 0},
+		"size": {"x": 3840, "y": 2160},
+		"text_speed": 0.05,
+		"auto_advance": false,
+		"font_size": 60,
+		"input_wait": true
+	}
+}

@@ -12,7 +12,8 @@ func register_builtin_commands():
 	register_command(CharaCommand.new())
 	register_command(CharaHideCommand.new())
 	register_command(DialogueCommand.new())
-	
+	register_command(WindowCommand.new())
+
 	# ★新規追加: Wait関連コマンド
 	register_command(WaitCommand.new())
 	register_command(WaitCancelCommand.new())
