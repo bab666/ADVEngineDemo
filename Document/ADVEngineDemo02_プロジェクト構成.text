@@ -1,0 +1,99 @@
+## 現在の実装状況
+
+### シーン構成
+
+- **タイトル画面** (`scenes/title.tscn`)
+  - ゲーム開始、つづきから（無効）、設定（無効）、終了
+  - タイトルBGM再生対応
+
+- **ゲーム画面** (`scenes/game.tscn`)
+  - GameManager によるシナリオ進行制御
+  - 背景表示（TextureRect）
+  - キャラクター表示（CharacterDisplay）
+  - UIレイヤー（複数メッセージウインドウ）
+
+### スクリプト構成
+
+#### マネージャー系
+
+- `game_manager.gd`: ゲーム全体の制御
+- `scenario_manager.gd`: シナリオファイルのパース・進行
+- `command_registry.gd`: コマンドの登録・実行
+- `window_manager.gd`: メッセージウインドウの管理
+- `audio_manager.gd`: BGM/SE管理（AutoLoad）
+
+#### データ/表示系
+
+- `character_data.gd`: キャラクターデータ構造
+- `character_display.gd`: キャラクター立ち絵表示
+- `message_window.gd`: メッセージウインドウ基底クラス
+
+#### コマンド系（`scripts/commands/`）
+
+- `base_command.gd`: コマンド基底クラス
+- `bg_command.gd`: 背景切り替え
+- `chara_command.gd`: キャラクター表示
+- `chara_hide_command.gd`: キャラクター非表示
+- `dialogue_command.gd`: 台詞表示
+- `bgm_command.gd`: BGM再生
+- `stopbgm_command.gd`: BGM停止
+- `stopse_command.gd`: SE停止
+- `wait_command.gd`: 時間待機
+- `wait_cancel_command.gd`: 待機キャンセル
+- `window_command.gd`: ウインドウ切り替え
+
+### リソース構成
+
+```
+resources/
+├── audio/
+│   ├── bgm/              # BGMファイル (.ogg推奨)
+│   └── se/               # SEファイル
+├── backgrounds/          # 背景画像
+├── characters/           # キャラクター立ち絵
+├── characters_data/      # キャラクターデータJSON
+├── scenarios/            # シナリオテキストファイル
+└── system/
+    └── windows_config.json  # ウインドウ設定
+```
+
+---
+
+## プロジェクト構成
+
+### ディレクトリ構造
+
+```
+ADVEngineDemo/
+├── .godot/                    # Godot内部ファイル
+├── addons/                    # プラグイン
+│   └── character_manager/     # キャラクターエディター
+├── resources/                 # リソースファイル
+│   ├── audio/
+│   ├── backgrounds/
+│   ├── characters/
+│   ├── characters_data/
+│   ├── scenarios/
+│   └── system/
+├── scenes/                    # シーンファイル
+│   ├── editor/                # エディター用シーン
+│   ├── ui/
+│   │   └── windows/           # ウインドウシーン
+│   ├── game.tscn              # メインゲーム画面
+│   └── title.tscn             # タイトル画面
+└── scripts/                   # スクリプトファイル
+    ├── commands/              # コマンドクラス群
+    ├── audio_manager.gd       # オーディオ管理
+    ├── character_data.gd
+    ├── character_display.gd
+    ├── command_registry.gd
+    ├── game_manager.gd
+    ├── message_window.gd
+    ├── scenario_manager.gd
+    ├── title.gd
+    └── window_manager.gd
+```
+
+---
+
+## 
