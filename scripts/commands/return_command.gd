@@ -7,7 +7,7 @@ func get_command_name() -> String:
 func get_description() -> String:
 	return "call元の位置に戻ります。"
 
-func execute(params: Dictionary, context: Dictionary) -> void:
+func execute(_params: Dictionary, context: Dictionary) -> void:
 	var sm = context.get("scenario_manager")
 	if sm:
 		sm.return_from_call()

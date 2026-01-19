@@ -45,7 +45,10 @@ func setup(window_config: Dictionary):
 	if panel and config.has("size"):
 		var s = config["size"]
 		panel.custom_minimum_size = Vector2(s.x, s.y)
-		panel.size = Vector2(s.x, s.y) # 即時反映
+		
+		# ★修正: panel.size = ... だと警告が出るため、set_deferred を使用する
+		# panel.size = Vector2(s.x, s.y)  <-- 削除またはコメントアウト
+		panel.set_deferred("size", Vector2(s.x, s.y))
 	
 	# フォント設定の適用 (RichTextLabelのtheme override)
 	if text_label and config.has("font_size"):

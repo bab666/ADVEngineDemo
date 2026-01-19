@@ -9,6 +9,11 @@ var current_line: int = -1
 var current_file_path: String = ""
 var labels: Dictionary = {}
 var call_stack: Array = []
+# ★追加: ブロック解析用
+var is_recording_sequence: bool = false
+var recorded_sequence: Array[Dictionary] = []
+# ブロック解析用変数にID保持用を追加
+var current_sequence_id: String = "" # ★追加
 
 # (省略: load_scenario, jump_to, call_scenario, return_from_call は既存のまま変更なし)
 func load_scenario(file_path: String) -> bool:
@@ -21,7 +26,41 @@ func load_scenario(file_path: String) -> bool:
 	current_scenario.clear(); labels.clear(); current_line = -1; current_file_path = file_path
 	while not file.eof_reached():
 		var line = file.get_line().strip_edges()
-		if line.is_empty(): continue
+		if line.is_empty(): continue# ★ブロック開始判定
+		if line.begins_with("@async"):
+			is_recording_sequence = true
+			recorded_sequence = []
+			current_sequence_id = "" # リセット
+			
+			# id=... があるかチェック
+			var parts = line.split(" ", false)
+			for part in parts:
+				if part.begins_with("id="):
+					current_sequence_id = part.substr(3)
+			continue
+		
+		# ★ブロック終了判定
+		if line == "@end_async":
+			is_recording_sequence = false
+			var seq_cmd = {
+				"type": "run_sequence",
+				"commands": recorded_sequence.duplicate(),
+				"id": current_sequence_id # ★IDをコマンドに含める
+			}
+			current_scenario.append(seq_cmd)
+			recorded_sequence = []
+			continue
+			
+		# ▼▼▼【修正】ここに追加してください ▼▼▼
+		# ブロック内なら記録用配列に追加して、下のメイン追加処理をスキップする
+		if is_recording_sequence:
+			 # コメント行などは _parse_line が空を返すので無視される
+			var cmd_data = _parse_line(line)
+			if not cmd_data.is_empty():
+				recorded_sequence.append(cmd_data)
+			continue
+		# ▲▲▲【修正】ここまで ▲▲▲	
+		# ラベル解析処理
 		if line.begins_with("#"):
 			labels[line.substr(1).strip_edges()] = current_scenario.size()
 			continue
@@ -118,6 +157,8 @@ func _parse_command(line: String) -> Dictionary:
 			result = {"type": "return"}
 		"stop":
 			result = {"type": "stop"}
+		"camera": return _parse_camera_command(parts)
+		"sync": return {"type": "sync"}
 	
 	# ★重要: 全コマンドの最後に共通パラメータ解析を実行
 	if not result.is_empty():
@@ -204,6 +245,81 @@ func _parse_window_command(parts: Array) -> Dictionary:
 func _parse_dialogue(line: String) -> Dictionary:
 	var parts = line.split(":", true, 1)
 	return {"type": "dialogue", "character": parts[0].strip_edges(), "text": parts[1].strip_edges() if parts.size() > 1 else ""}
+	
+# ★追加: カメラコマンド解析
+# ★追加・修正: カメラコマンド解析
+func _parse_camera_command(parts: Array) -> Dictionary:
+	var result = {
+		"type": "camera",
+		# 初期値は null にしておき、コマンド側で「指定がなければ現在値を維持」などの判断をさせる余地を残すか、
+		# あるいは明示的なデフォルト値を持たせるかは設計次第ですが、
+		# ここでは既存に合わせてデフォルト値を設定しつつ、キーの有無で判定できるようにします。
+		"time": 1000,
+		"wait": false,
+		"lazy": false,
+		# offset, zoom, rotation は指定があった場合のみ辞書に入れる形が理想ですが、
+		# 既存コードとの兼ね合いで、まずはデフォルト値をセットしておきます。
+		# (コマンド側で params.has("key") で判定すれば、値の維持も実装可能です)
+		"offset": Vector2.ZERO,
+		"zoom": 1.0,
+		"rotation": 0.0 
+	}
+	
+	# 指定されたパラメータを記録するセット（デフォルト値による上書き防止用）
+	var specified_params = []
+	
+	for i in range(1, parts.size()):
+		var param = parts[i]
+		
+		# "offset:0,0" 形式
+		if param.begins_with("offset:"):
+			var val = param.substr(7).split(",")
+			if val.size() >= 2:
+				result["offset"] = Vector2(float(val[0]), float(val[1]))
+				specified_params.append("offset")
+		
+		# "zoom:1.0" 形式
+		elif param.begins_with("zoom:"):
+			result["zoom"] = float(param.substr(5))
+			specified_params.append("zoom")
+			
+		# ★追加: "rotation:45" 形式
+		elif param.begins_with("rotation:"):
+			result["rotation"] = float(param.substr(9))
+			specified_params.append("rotation")
+		
+		# "time:3000" 形式
+		elif param.begins_with("time:"):
+			var val_str = param.substr(5)
+			if val_str.is_valid_int():
+				result["time"] = int(val_str)
+			elif val_str.is_valid_float():
+				result["time"] = int(float(val_str))
+		
+		# "time=3000" 形式
+		elif param.begins_with("time="):
+			var val_str = param.substr(5)
+			if val_str.is_valid_int():
+				result["time"] = int(val_str)
+				
+		elif param == "wait!":
+			result["wait"] = true
+		
+		# ★追加: "lazy" フラグ
+		elif param == "lazy":
+			result["lazy"] = true
+	
+	# 指定されなかったパラメータについては、コマンド側で「変更なし」と扱えるよう
+	# 辞書から削除する（＝null扱いにする）のが安全ですが、
+	# 既存動作（offset, zoomの強制上書き）を維持するかどうかの判断が必要です。
+	# 今回は「指定があったものだけキーに残す」方式に微修正して、
+	# CameraCommand側で「キーがなければ現在の値を維持」できるようにします。
+	
+	if not "offset" in specified_params: result.erase("offset")
+	if not "zoom" in specified_params: result.erase("zoom")
+	if not "rotation" in specified_params: result.erase("rotation")
+			
+	return result
 
 func next_line() -> Dictionary:
 	current_line += 1

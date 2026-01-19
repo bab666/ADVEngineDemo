@@ -8,7 +8,7 @@ func get_command_name() -> String:
 func get_description() -> String:
 	return "BGMを停止します。パラメータ: file(省略可), time(フェード時間)"
 
-func execute(params: Dictionary, context: Dictionary) -> void:
+func execute(params: Dictionary, _context: Dictionary) -> void:
 	var file_name = params.get("file", "")
 	var fade_time = params.get("time", 0.0)
 	

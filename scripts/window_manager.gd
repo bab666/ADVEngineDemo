@@ -89,11 +89,11 @@ func set_current_window(window_id: String):
 		push_warning("Window Config not found: " + window_id)
 
 # ダイアログ表示のラッパー (2026/01/19修正)
-func show_dialogue(_unused_id: String, name: String, text: String):
+func show_dialogue(_unused_id: String, character_name: String, text: String):
 	# 第一引数は無視して、設定された current_window_id を使うように変更
 	var win = get_message_window(current_window_id)
 	if win:
-		win.show_dialogue(name, text)
+		win.show_dialogue(character_name, text)
 
 func hide_all_windows():
 	for win in active_windows.values():

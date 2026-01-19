@@ -7,7 +7,7 @@ func get_command_name() -> String:
 func get_description() -> String:
 	return "実行中のwaitを強制的にキャンセルします。"
 
-func execute(params: Dictionary, context: Dictionary) -> void:
+func execute(_params: Dictionary, context: Dictionary) -> void:
 	context.game_manager.cancel_wait()
 
 func requires_wait() -> bool:

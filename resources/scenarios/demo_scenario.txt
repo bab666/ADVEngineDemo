@@ -1,5 +1,104 @@
 # D:\Works\Godot\spelLDemo\resources\scenarios\demo_scenario.txt
+# カメラテスト
+@bg room
+@chara ai normal
+@camera zoom:1.0 offset:0,0 rotation:0 time:0
+
+ai: カメラ機能の拡張テストを開始します。
+
+# --- Test 1: 回転 (Rotation) ---
+ai: まずは「回転」のテストです。時計回りに15度傾きます。
+@camera rotation:15 time:1000 wait!
+
+ai: 戻ります。
+@camera rotation:0 time:1000 wait!
+
+# --- Test 2: Lazyモード (滑らかな上書き) ---
+ai: 次に「lazy」オプションのテストです。
+ai: まず、3秒かけてズームインします。その途中で別のコマンドを割り込ませます。
+ai: lazyを指定しているので、現在の途中位置から滑らかに次の動作へ移行するはずです。
+
+# 1. 3秒かけて2倍ズーム（開始）
+@camera zoom:2.0 time:3000
+
+# 2. 1秒だけ待つ（まだズームの途中）
+@wait time=1000
+
+# 3. lazy指定で割り込み（ここから滑らかに回転へ移行）
+@camera rotation:10 lazy time:2000 wait!
+
+ai: 滑らかに移行しましたか？（カクつきがないこと）
+@camera zoom:1.0 rotation:0 time:1000 wait!
+
+# --- Test 3: 通常モード (Lazyなし・カクつき確認) ---
+ai: 比較のため「lazyなし（デフォルト）」で同じことをします。
+ai: 割り込んだ瞬間、最初のズーム目標（2倍）までワープしてから次の動作が始まります。
+
+# 1. 3秒かけて2倍ズーム（開始）
+@camera zoom:2.0 time:3000
+
+# 2. 1秒だけ待つ
+@wait time=1000
+
+# 3. lazyなしで割り込み（ここでカクっと動くはず）
+@camera rotation:-10 time:2000 wait!
+
+ai: 今度はワープ（カクつき）が発生しましたか？
+@camera zoom:1.0 rotation:0 time:1000 wait!
+
+# --- Test 4: Async修正確認 ---
+ai: 最後に修正された「非同期ブロック」の確認です。
+ai: 画面を揺らしながら文章を表示します。クリックで読み進めても揺れは止まりません。
+
+@async
+	@camera rotation:5 time:100 wait!
+	@camera rotation:-5 time:100 wait!
+	@camera rotation:5 time:100 wait!
+	@camera rotation:-5 time:100 wait!
+	@camera rotation:0 time:100 wait!
+@end_async
+
+ai: 揺れている間もテキストは進みます。
+ai: 揺れ終わりましたか？
+
+ai: テスト終了です。お疲れ様でした。
+
 # 新機能テストシナリオ
+# --- 非同期カメラ演出の開始 ---
+# @async ブロックの中身は、メインの会話とは別のラインで実行されます。
+# ブロック内での wait! は「ブロック内の次のコマンドを待たせる」意味になります。
+
+
+ai: カメラを初期位置に設定。
+
+@async
+	# 1. 30秒かけて、顔のあたり（Y=-300）へ2倍ズーム
+	# wait! があるので、この30秒が終わるまで次の「元に戻る」コマンドは実行されません
+	@camera zoom:2.0 offset:0,-300 time:10000 wait!
+
+	# 2. 30秒かけて、元の位置（中心）と倍率に戻る
+	@camera zoom:1.0 offset:0,0 time:30000 wait!
+@end_async
+
+# --- ここからメインシナリオ ---
+# 上記のカメラ演出が裏で走っている状態で、会話が始まります。
+
+ai: 今、カメラがゆっくりとズームし始めました。
+ai: 往復で合計60秒かかる長い演出ですが、こうして会話を進めることができます。
+
+@chara ai smile
+ai: カメラが寄ってきても、私はいつも通りです。
+
+# プレイヤーが読む速度によりますが、まだズーム中かもしれません
+ai: この機能を使えば、「遠くの爆発を見ながら逃げる会話」や、
+ai: 「ゆっくり日が暮れていく中での告白」などが表現できますね。
+
+# もし演出の終了を待ちたい場合は、任意のタイミングで @sync を入れます
+ai: さて、演出を強制終了してみましょう。
+@kill 
+
+# ジャンプテストシナリオ
+
 @bg room
 
 ai: 次の行で停止します。選択肢が出る想定です。

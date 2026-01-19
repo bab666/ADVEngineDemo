@@ -29,7 +29,12 @@ func register_builtin_commands():
 	register_command(StopSeCommand.new())
 	# メモリリリースコマンド
 	register_command(ClearMemoryCommand.new())
-	
+	# 非同期・同期処理コマンド
+	register_command(RunSequenceCommand.new())
+	register_command(SyncCommand.new())
+	# 演出コマンド
+	register_command(CameraCommand.new())
+
 	print("=== 登録されたコマンド一覧 ===")
 	for key in commands.keys():
 		print("@" + key)
