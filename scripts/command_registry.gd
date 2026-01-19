@@ -22,11 +22,13 @@ func register_builtin_commands():
 	register_command(JumpCommand.new())
 	register_command(CallCommand.new())
 	register_command(ReturnCommand.new())
-	
+	register_command(StopCommand.new())	
 	# オーディオコマンド
 	register_command(BgmCommand.new())
 	register_command(StopBgmCommand.new())
 	register_command(StopSeCommand.new())
+	# メモリリリースコマンド
+	register_command(ClearMemoryCommand.new())
 	
 	print("=== 登録されたコマンド一覧 ===")
 	for key in commands.keys():

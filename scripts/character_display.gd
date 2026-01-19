@@ -145,3 +145,23 @@ func hide_character(char_id: String):
 func clear_all():
 	for n in characters.values(): n.queue_free()
 	characters.clear()
+	
+# ★新規追加: キャッシュのクリア
+# force=true なら表示中のキャラ以外全てのデータを消す
+func clear_cache(force: bool = false):
+	if force:
+		# 完全リセット（表示中のキャラがいるとエラーになる可能性があるため注意）
+		character_data_cache.clear()
+	else:
+		# スマート削除: 現在表示されていないキャラクターのデータだけを消す
+		var active_ids = characters.keys()
+		var ids_to_remove = []
+		
+		for cached_id in character_data_cache.keys():
+			# 現在表示リストに含まれていないIDを探す
+			if not cached_id in active_ids:
+				ids_to_remove.append(cached_id)
+		
+		for id in ids_to_remove:
+			character_data_cache.erase(id)
+			print("Resource Cleared: ", id)

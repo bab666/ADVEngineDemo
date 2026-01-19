@@ -6,3 +6,7 @@ res://scripts/commands/return_command.gd
 res://scripts/command_registry.gd
 res://resources/scenarios/demo_scenario.txt
 res://resources/scenarios/demo_scene1.txt
+res://scripts/game_manager.gd
+res://scripts/commands/stop_command.gd
+res://scripts/character_display.gd
+res://scripts/commands/clear_memory_command.gd
