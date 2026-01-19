@@ -1,5 +1,21 @@
 # D:\Works\Godot\spelLDemo\resources\scenarios\demo_scenario.txt
 # 新機能テストシナリオ
+@bg room
+
+# 1. 2000ms 待つテスト
+ai: 今から2秒待ちます。
+@wait time=2000
+ai: 2秒経ちました。
+
+# 2. キャラ表示のwait完全実装テスト
+@chara ai normal pos:auto time=1500 wait=true
+ai: フェードイン(1.5秒)が終わるのを待ってから、このテキストが表示されます。
+
+# 3. wait_cancel テスト（シナリオ上では分かりにくいですが機能としては実装済み）
+ai: 次は3秒待ちますが、内部でキャンセルされたら即座に進みます（テスト用）。
+@wait time=3000
+ai: 終了です。
+
 
 # 背景設定
 @bg room

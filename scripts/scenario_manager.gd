@@ -45,7 +45,6 @@ func _parse_command(line: String) -> Dictionary:
 		"bg":
 			return {"type": "bg", "image": parts[1] if parts.size() > 1 else ""}
 		"chara":
-			# ★修正: 高機能パーサーを使用
 			return _parse_chara_command(parts)
 		"chara_hide":
 			return {"type": "chara_hide", "id": parts[1] if parts.size() > 1 else ""}
@@ -55,15 +54,21 @@ func _parse_command(line: String) -> Dictionary:
 			return _parse_stop_command(parts, "bgm")
 		"stopse":
 			return _parse_stop_command(parts, "se")
+		# ★新規追加
+		"wait":
+			return _parse_wait_command(parts)
+		"wait_cancel":
+			return {"type": "wait_cancel"}
+			
 	return {}
 
-# ★重要: キャラクターコマンド解析 (src, pos:auto, wait などに対応)
+# キャラクターコマンド解析 (pos:auto等対応版)
 func _parse_chara_command(parts: Array) -> Dictionary:
 	var result = {
 		"type": "chara",
-		"id": parts[1] if parts.size() > 1 else "",        # 表示用ID (管理ID)
-		"expression": parts[2] if parts.size() > 2 else "", # 表情
-		"source_id": "",                                    # データ元ID (未指定なら id と同じ)
+		"id": parts[1] if parts.size() > 1 else "",
+		"expression": parts[2] if parts.size() > 2 else "",
+		"source_id": "",
 		"pos_mode": "auto",
 		"pos": Vector3.ZERO,
 		"scale": null,
@@ -73,13 +78,10 @@ func _parse_chara_command(parts: Array) -> Dictionary:
 		"reflect": false
 	}
 	
-	# 初期状態では source_id は id と同じにする
 	result["source_id"] = result["id"]
 	
-	# 3番目以降の引数を解析
 	for i in range(3, parts.size()):
 		var param = parts[i]
-		
 		if param.begins_with("pos:"):
 			var val = param.substr(4)
 			if val == "auto":
@@ -90,46 +92,51 @@ func _parse_chara_command(parts: Array) -> Dictionary:
 				result["pos"].x = float(coords[0]) if coords.size() > 0 else 0
 				result["pos"].y = float(coords[1]) if coords.size() > 1 else 0
 				result["pos"].z = float(coords[2]) if coords.size() > 2 else 0
-		
 		elif "=" in param:
 			var kv = param.split("=", true, 1)
 			var key = kv[0]
 			var val = kv[1]
-			
 			match key:
-				"src": result["source_id"] = val # ★追加: データ元指定 (例: src=ai)
+				"src": result["source_id"] = val
 				"scale": result["scale"] = float(val)
 				"time": result["time"] = int(val)
 				"layer": result["layer"] = int(val)
 				"wait": result["wait"] = (val.to_lower() == "true")
 				"reflect": result["reflect"] = (val.to_lower() == "true")
-		
-		# 互換性: 数値のみの場合は座標とみなす
 		elif param.is_valid_float() or param.is_valid_int():
 			result["pos_mode"] = "manual"
 			if result["pos"].x == 0 and result["pos"].y == 0:
 				result["pos"].x = float(param)
 			elif result["pos"].y == 0:
 				result["pos"].y = float(param)
-	
 	return result
 
-func _parse_bgm_command(parts: Array) -> Dictionary:
+# ★新規追加: Waitコマンド解析
+func _parse_wait_command(parts: Array) -> Dictionary:
 	var result = {
-		"type": "bgm",
-		"file": parts[1] if parts.size() > 1 else "",
-		"volume": 100,
-		"sprite_time": "",
-		"loop": true,
-		"seek": 0.0,
-		"restart": false
+		"type": "wait",
+		"time": 1000 # デフォルト1秒
 	}
+	
+	for i in range(1, parts.size()):
+		var param = parts[i]
+		if param.begins_with("time="):
+			var val = param.substr(5)
+			if val.is_valid_int():
+				result["time"] = int(val)
+		elif param.is_valid_int():
+			result["time"] = int(param)
+			
+	return result
+
+# (BGM等の解析関数は変更なし)
+func _parse_bgm_command(parts: Array) -> Dictionary:
+	var result = {"type": "bgm", "file": parts[1] if parts.size() > 1 else "", "volume": 100, "sprite_time": "", "loop": true, "seek": 0.0, "restart": false}
 	for i in range(2, parts.size()):
 		var param = parts[i]
 		if "=" in param:
 			var kv = param.split("=", true, 1)
-			var key = kv[0].strip_edges()
-			var value = kv[1].strip_edges()
+			var key = kv[0].strip_edges(); var value = kv[1].strip_edges()
 			match key:
 				"volume": result["volume"] = int(value)
 				"sprite_time": result["sprite_time"] = value
@@ -141,30 +148,22 @@ func _parse_bgm_command(parts: Array) -> Dictionary:
 func _parse_stop_command(parts: Array, audio_type: String) -> Dictionary:
 	var result = {"type": "stop" + audio_type, "file": "", "time": 0.0}
 	if parts.size() > 1:
-		if parts[1].begins_with("time:"):
-			result["time"] = float(parts[1].substr(5))
+		if parts[1].begins_with("time:"): result["time"] = float(parts[1].substr(5))
 		else:
 			result["file"] = parts[1]
 			for i in range(2, parts.size()):
-				if parts[i].begins_with("time:"):
-					result["time"] = float(parts[i].substr(5))
-					break
+				if parts[i].begins_with("time:"): result["time"] = float(parts[i].substr(5)); break
 	return result
 
 func _parse_dialogue(line: String) -> Dictionary:
 	var parts = line.split(":", true, 1)
-	return {
-		"type": "dialogue",
-		"character": parts[0].strip_edges(),
-		"text": parts[1].strip_edges() if parts.size() > 1 else ""
-	}
+	return {"type": "dialogue", "character": parts[0].strip_edges(), "text": parts[1].strip_edges() if parts.size() > 1 else ""}
 
 func next_line() -> Dictionary:
 	current_line += 1
 	if current_line >= current_scenario.size():
 		scenario_finished.emit()
 		return {}
-	
 	var command = current_scenario[current_line]
 	scenario_line_changed.emit(command)
 	return command

@@ -1,4 +1,3 @@
-# D:\Works\Godot\spelLDemo\scripts\game_manager.gd
 extends Node
 
 @onready var scenario_manager: ScenarioManager = $ScenarioManager
@@ -9,6 +8,9 @@ extends Node
 
 # コマンド実行時のコンテキスト
 var command_context: Dictionary = {}
+
+# ★新規: 待ち時間管理用のTween
+var wait_tween: Tween
 
 func _ready():
 	# コマンドコンテキストを構築
@@ -47,10 +49,12 @@ func _on_scenario_line_changed(command: Dictionary):
 	# 待機不要なコマンドは自動進行
 	if not requires_wait:
 		if scenario_manager.has_next():
+			# 少しだけ待ってから次へ（演出被り防止）
 			await get_tree().create_timer(0.1).timeout
 			scenario_manager.next_line()
 
 func _on_advance_requested():
+	# メッセージ送りなどで次へ進む要求があった場合
 	if scenario_manager.has_next():
 		scenario_manager.next_line()
 	else:
@@ -59,3 +63,31 @@ func _on_advance_requested():
 func _on_scenario_finished():
 	print("全シナリオ終了")
 	message_window.hide_window()
+
+# --- ★新規追加: 待ち時間管理機能 ---
+
+# 指定時間待機し、完了後に自動で次の行へ進む
+func start_wait(time_sec: float) -> void:
+	# 既存の待機があればキャンセル
+	cancel_wait()
+	
+	print("Wait開始: ", time_sec, "秒")
+	
+	# Tweenを使って待機を作成（Tweenはkill()でキャンセル可能なため）
+	wait_tween = create_tween()
+	wait_tween.tween_interval(time_sec)
+	
+	# 完了時のコールバック
+	wait_tween.finished.connect(_on_wait_finished)
+
+# 待機完了時の処理
+func _on_wait_finished():
+	print("Wait終了")
+	if scenario_manager.has_next():
+		scenario_manager.next_line()
+
+# 待機の強制キャンセル
+func cancel_wait() -> void:
+	if wait_tween and wait_tween.is_valid():
+		wait_tween.kill()
+		print("Waitキャンセル")
