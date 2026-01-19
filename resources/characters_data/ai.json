@@ -18,7 +18,7 @@
 	"portrait_scale": 1.0,
 	"portraits": {
 		"angry": {
-			"base_image": "",
+			"base_image": "res://resources/characters/alice_normal.png",
 			"layer_offsets": {
 
 			},
@@ -38,7 +38,7 @@
 			"name": "normal"
 		},
 		"smile": {
-			"base_image": "res://resources/characters/alice_smile.png",
+			"base_image": "res://resources/characters/alice_normal.png",
 			"layer_offsets": {
 
 			},

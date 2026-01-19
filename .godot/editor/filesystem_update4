@@ -1,7 +1,4 @@
-res://addons/character_manager/character_editor.tscn
-res://resources/characters_data/alice.json
-res://resources/scenarios/demo_scenario.txt
 res://scenes/title.tscn
 res://resources/characters_data/ai.json
 res://scripts/scenario_manager.gd
-res://scripts/character_display.gd
+res://resources/scenarios/demo_scenario.txt

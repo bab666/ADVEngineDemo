@@ -4,6 +4,15 @@
 # 背景設定
 @bg room_day
 
+@chara_hide ai
+@chara_hide alice
+
+# 2人同時表示テスト
+@chara ai smile pos:500,900 wait=false
+@chara alice normal pos:400,900 
+ai: 私たちは同時に表示されています！
+
+
 # 1. 基本表示と自動配置 (pos:auto)
 # 中央にフェードイン (デフォルト time=1000)
 @chara ai normal pos:auto
@@ -34,21 +43,10 @@ ai: scaleとreflectは元に戻しています。
 # 左から
 @chara ai normal pos:400,800 time=2000 wait=false
 # 右から
-@chara ai smile pos:1500,800 time=2000 reflect=true wait=true
+@chara ai_copy smile src=ai pos:1500,800 time=2000 reflect=true wait=true
 
 ai: 今、2つの立ち絵が同時にフェードインしたはずです。
 ai: 最後のコマンドだけ wait=true にすることで、完了を待ってからこのセリフが出ています。
-
-# 5. レイヤー制御 (layer)
-@chara_hide ai
-# 手前のキャラ (layer=2)
-@chara ai smile pos:1100,900 layer=2 scale=1.0 time=500 wait=false
-
-# 奥のキャラ (layer=1) - 少し暗くしたり、小さくしたりすると分かりやすい
-@chara ai angry pos:1000,900 layer=1 scale=0.9 time=500
-
-ai: 重なり順のテストです。
-ai: layer=2 の「笑顔」が、layer=1 の「怒り顔」の手前に表示されています。
 
 # 終了
 @chara_hide ai

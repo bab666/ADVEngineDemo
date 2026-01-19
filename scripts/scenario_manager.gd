@@ -1,4 +1,3 @@
-# D:\Works\Godot\spelLDemo\scripts\scenario_manager.gd
 extends Node
 class_name ScenarioManager
 
@@ -46,15 +45,10 @@ func _parse_command(line: String) -> Dictionary:
 		"bg":
 			return {"type": "bg", "image": parts[1] if parts.size() > 1 else ""}
 		"chara":
-			return {
-				"type": "chara",
-				"id": parts[1] if parts.size() > 1 else "",
-				"expression": parts[2] if parts.size() > 2 else "",
-				"x": int(parts[3]) if parts.size() > 3 else 0,
-				"y": int(parts[4]) if parts.size() > 4 else 0
-			}
-		"chara_hide":
+			# ★修正: 専用の解析関数を使用
 			return _parse_chara_command(parts)
+		"chara_hide":
+			return {"type": "chara_hide", "id": parts[1] if parts.size() > 1 else ""}
 		"bgm":
 			return _parse_bgm_command(parts)
 		"stopbgm":
@@ -62,91 +56,62 @@ func _parse_command(line: String) -> Dictionary:
 		"stopse":
 			return _parse_stop_command(parts, "se")
 	return {}
+
+# ★新規追加: キャラクターコマンド解析
 func _parse_chara_command(parts: Array) -> Dictionary:
 	var result = {
 		"type": "chara",
 		"id": parts[1] if parts.size() > 1 else "",
 		"expression": parts[2] if parts.size() > 2 else "",
-		# ★修正: デフォルトを "auto" (中央) に変更
-		"pos_mode": "auto", 
+		"pos_mode": "auto",
 		"pos": Vector3.ZERO,
 		"scale": null,
 		"time": 1000,
 		"layer": 1,
 		"wait": true,
-		"reflect": false
+		"reflect": false,
+		"source_id": "" # ★追加: データ元のID（指定がない場合は id と同じ）
 	}
+# 初期状態では source_id は id と同じにする
+	result["source_id"] = result["id"]
 	
-	# 3番目以降の引数を解析
 	for i in range(3, parts.size()):
 		var param = parts[i]
 		
 		if param.begins_with("pos:"):
-			# pos:x,y,z または pos:auto
 			var val = param.substr(4)
 			if val == "auto":
 				result["pos_mode"] = "auto"
 			else:
-				result["pos_mode"] = "manual" # 明示的にマニュアルモードへ
+				result["pos_mode"] = "manual"
 				var coords = val.split(",")
 				result["pos"].x = float(coords[0]) if coords.size() > 0 else 0
 				result["pos"].y = float(coords[1]) if coords.size() > 1 else 0
 				result["pos"].z = float(coords[2]) if coords.size() > 2 else 0
 		
 		elif "=" in param:
-			# key=value 形式
 			var kv = param.split("=", true, 1)
 			var key = kv[0]
 			var val = kv[1]
 			
 			match key:
+				"src": result["source_id"] = val # ★追加: src=ai のように指定
 				"scale": result["scale"] = float(val)
 				"time": result["time"] = int(val)
 				"layer": result["layer"] = int(val)
 				"wait": result["wait"] = (val.to_lower() == "true")
 				"reflect": result["reflect"] = (val.to_lower() == "true")
 		
-		# ★追加: 数値のみの場合は座標として扱う（互換性維持）
+		# 互換性: 数値のみの場合は座標とみなす
 		elif param.is_valid_float() or param.is_valid_int():
 			result["pos_mode"] = "manual"
-			# すでにXが入っていればYに入れる、という簡易ロジック
 			if result["pos"].x == 0 and result["pos"].y == 0:
 				result["pos"].x = float(param)
 			elif result["pos"].y == 0:
 				result["pos"].y = float(param)
 	
 	return result
-	
-	# 3番目以降の引数を解析
-	for i in range(3, parts.size()):
-		var param = parts[i]
-		
-		if param.begins_with("pos:"):
-			# pos:x,y,z または pos:auto
-			var val = param.substr(4)
-			if val == "auto":
-				result["pos_mode"] = "auto"
-			else:
-				var coords = val.split(",")
-				result["pos"].x = float(coords[0]) if coords.size() > 0 else 0
-				result["pos"].y = float(coords[1]) if coords.size() > 1 else 0
-				result["pos"].z = float(coords[2]) if coords.size() > 2 else 0
-		
-		elif "=" in param:
-			# key=value 形式
-			var kv = param.split("=", true, 1)
-			var key = kv[0]
-			var val = kv[1]
-			
-			match key:
-				"scale": result["scale"] = float(val)
-				"time": result["time"] = int(val)
-				"layer": result["layer"] = int(val)
-				"wait": result["wait"] = (val.to_lower() == "true")
-				"reflect": result["reflect"] = (val.to_lower() == "true")
-	
-	return result
-	
+
 func _parse_bgm_command(parts: Array) -> Dictionary:
 	var result = {
 		"type": "bgm",
@@ -157,53 +122,31 @@ func _parse_bgm_command(parts: Array) -> Dictionary:
 		"seek": 0.0,
 		"restart": false
 	}
-	
-	# パラメータをパース (key=value 形式)
 	for i in range(2, parts.size()):
 		var param = parts[i]
 		if "=" in param:
 			var kv = param.split("=", true, 1)
 			var key = kv[0].strip_edges()
 			var value = kv[1].strip_edges()
-			
 			match key:
-				"volume":
-					result["volume"] = int(value)
-				"sprite_time":
-					result["sprite_time"] = value
-				"loop":
-					result["loop"] = value.to_lower() == "true"
-				"seek":
-					result["seek"] = float(value)
-				"restart":
-					result["restart"] = value.to_lower() == "true"
-	
+				"volume": result["volume"] = int(value)
+				"sprite_time": result["sprite_time"] = value
+				"loop": result["loop"] = value.to_lower() == "true"
+				"seek": result["seek"] = float(value)
+				"restart": result["restart"] = value.to_lower() == "true"
 	return result
 
 func _parse_stop_command(parts: Array, audio_type: String) -> Dictionary:
-	var result = {
-		"type": "stop" + audio_type,
-		"file": "",
-		"time": 0.0
-	}
-	
-	# 第一引数がファイル名か time: か判定
+	var result = {"type": "stop" + audio_type, "file": "", "time": 0.0}
 	if parts.size() > 1:
 		if parts[1].begins_with("time:"):
-			# time:のみ指定されている場合
-			var time_str = parts[1].substr(5).strip_edges()
-			result["time"] = float(time_str)
+			result["time"] = float(parts[1].substr(5))
 		else:
-			# ファイル名が指定されている
 			result["file"] = parts[1]
-			
-			# time: パラメータを探す
 			for i in range(2, parts.size()):
 				if parts[i].begins_with("time:"):
-					var time_str = parts[i].substr(5).strip_edges()
-					result["time"] = float(time_str)
+					result["time"] = float(parts[i].substr(5))
 					break
-	
 	return result
 
 func _parse_dialogue(line: String) -> Dictionary:
