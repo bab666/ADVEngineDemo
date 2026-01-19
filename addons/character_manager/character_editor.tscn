@@ -104,10 +104,12 @@ layout_mode = 2
 
 [node name="BgSelect" type="OptionButton" parent="HSplitContainer/LeftPanel/VBox/PreviewSettings"]
 layout_mode = 2
-item_count = 1
 selected = 0
-popup/item_0/text = "背景なし"
+item_count = 2
+popup/item_0/text = "背景なし (Gray)"
 popup/item_0/id = 0
+popup/item_1/text = "room.png"
+popup/item_1/id = 1
 
 [node name="HSeparator2" type="HSeparator" parent="HSplitContainer/LeftPanel/VBox"]
 layout_mode = 2
@@ -166,21 +168,44 @@ layout_mode = 2
 [node name="RightPanel" type="Panel" parent="HSplitContainer"]
 layout_mode = 2
 
-[node name="Preview" type="SubViewportContainer" parent="HSplitContainer/RightPanel"]
+[node name="VBox" type="VBoxContainer" parent="HSplitContainer/RightPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ToolBar" type="HBoxContainer" parent="HSplitContainer/RightPanel/VBox"]
+layout_mode = 2
+
+[node name="ZoomOut" type="Button" parent="HSplitContainer/RightPanel/VBox/ToolBar"]
+layout_mode = 2
+text = "ズームアウト (-)"
+
+[node name="ZoomReset" type="Button" parent="HSplitContainer/RightPanel/VBox/ToolBar"]
+layout_mode = 2
+text = "リセット (100%)"
+
+[node name="ZoomIn" type="Button" parent="HSplitContainer/RightPanel/VBox/ToolBar"]
+layout_mode = 2
+text = "ズームイン (+)"
+
+[node name="ZoomLabel" type="Label" parent="HSplitContainer/RightPanel/VBox/ToolBar"]
+layout_mode = 2
+text = "Zoom: 100%"
+
+[node name="Preview" type="SubViewportContainer" parent="HSplitContainer/RightPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="HSplitContainer/RightPanel/Preview"]
+[node name="SubViewport" type="SubViewport" parent="HSplitContainer/RightPanel/VBox/Preview"]
 handle_input_locally = false
-size = Vector2i(1920, 1080)
+size = Vector2i(3528, 2125)
 render_target_update_mode = 4
 
-[node name="GrayBg" type="ColorRect" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
+[node name="GrayBg" type="ColorRect" parent="HSplitContainer/RightPanel/VBox/Preview/SubViewport"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -188,19 +213,18 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.2, 0.2, 0.2, 1)
 
-[node name="BackgroundPreview" type="Sprite2D" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
+[node name="BackgroundPreview" type="Sprite2D" parent="HSplitContainer/RightPanel/VBox/Preview/SubViewport"]
 centered = false
 
-[node name="CharacterDisplay" type="Node2D" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
+[node name="CharacterDisplay" type="Node2D" parent="HSplitContainer/RightPanel/VBox/Preview/SubViewport"]
 script = ExtResource("2_display")
 
-[node name="GuideFrame" type="ReferenceRect" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
+[node name="GuideFrame" type="ReferenceRect" parent="HSplitContainer/RightPanel/VBox/Preview/SubViewport"]
 visible = false
 offset_right = 3840.0
 offset_bottom = 2160.0
-border_color = Color(1, 0, 0, 1)
 border_width = 4.0
 editor_only = false
 
-[node name="Camera2D" type="Camera2D" parent="HSplitContainer/RightPanel/Preview/SubViewport"]
-position = Vector2(960, 540)
+[node name="Camera2D" type="Camera2D" parent="HSplitContainer/RightPanel/VBox/Preview/SubViewport"]
+position = Vector2(1920, 1080)

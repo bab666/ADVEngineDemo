@@ -1,0 +1,61 @@
+{
+	"character_id": "ai",
+	"default_portrait": "normal",
+	"description": "",
+	"display_name": "ai",
+	"mirror": false,
+	"nicknames": [],
+	"parts_order": [
+		"eyebrows",
+		"eyes",
+		"mouth",
+		"extra"
+	],
+	"portrait_offset": {
+		"x": 0.0,
+		"y": 0.0
+	},
+	"portrait_scale": 1.0,
+	"portraits": {
+		"angry": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "angry"
+		},
+		"normal": {
+			"base_image": "res://resources/characters/alice_normal.png",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "normal"
+		},
+		"smile": {
+			"base_image": "res://resources/characters/alice_smile.png",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "smile"
+		},
+		"ああああ": {
+			"base_image": "res://resources/characters/alice_normal.png",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": ""
+		}
+	}
+}

@@ -54,7 +54,7 @@ func _parse_command(line: String) -> Dictionary:
 				"y": int(parts[4]) if parts.size() > 4 else 0
 			}
 		"chara_hide":
-			return {"type": "chara_hide", "id": parts[1] if parts.size() > 1 else ""}
+			return _parse_chara_command(parts)
 		"bgm":
 			return _parse_bgm_command(parts)
 		"stopbgm":
@@ -62,7 +62,91 @@ func _parse_command(line: String) -> Dictionary:
 		"stopse":
 			return _parse_stop_command(parts, "se")
 	return {}
-
+func _parse_chara_command(parts: Array) -> Dictionary:
+	var result = {
+		"type": "chara",
+		"id": parts[1] if parts.size() > 1 else "",
+		"expression": parts[2] if parts.size() > 2 else "",
+		# ★修正: デフォルトを "auto" (中央) に変更
+		"pos_mode": "auto", 
+		"pos": Vector3.ZERO,
+		"scale": null,
+		"time": 1000,
+		"layer": 1,
+		"wait": true,
+		"reflect": false
+	}
+	
+	# 3番目以降の引数を解析
+	for i in range(3, parts.size()):
+		var param = parts[i]
+		
+		if param.begins_with("pos:"):
+			# pos:x,y,z または pos:auto
+			var val = param.substr(4)
+			if val == "auto":
+				result["pos_mode"] = "auto"
+			else:
+				result["pos_mode"] = "manual" # 明示的にマニュアルモードへ
+				var coords = val.split(",")
+				result["pos"].x = float(coords[0]) if coords.size() > 0 else 0
+				result["pos"].y = float(coords[1]) if coords.size() > 1 else 0
+				result["pos"].z = float(coords[2]) if coords.size() > 2 else 0
+		
+		elif "=" in param:
+			# key=value 形式
+			var kv = param.split("=", true, 1)
+			var key = kv[0]
+			var val = kv[1]
+			
+			match key:
+				"scale": result["scale"] = float(val)
+				"time": result["time"] = int(val)
+				"layer": result["layer"] = int(val)
+				"wait": result["wait"] = (val.to_lower() == "true")
+				"reflect": result["reflect"] = (val.to_lower() == "true")
+		
+		# ★追加: 数値のみの場合は座標として扱う（互換性維持）
+		elif param.is_valid_float() or param.is_valid_int():
+			result["pos_mode"] = "manual"
+			# すでにXが入っていればYに入れる、という簡易ロジック
+			if result["pos"].x == 0 and result["pos"].y == 0:
+				result["pos"].x = float(param)
+			elif result["pos"].y == 0:
+				result["pos"].y = float(param)
+	
+	return result
+	
+	# 3番目以降の引数を解析
+	for i in range(3, parts.size()):
+		var param = parts[i]
+		
+		if param.begins_with("pos:"):
+			# pos:x,y,z または pos:auto
+			var val = param.substr(4)
+			if val == "auto":
+				result["pos_mode"] = "auto"
+			else:
+				var coords = val.split(",")
+				result["pos"].x = float(coords[0]) if coords.size() > 0 else 0
+				result["pos"].y = float(coords[1]) if coords.size() > 1 else 0
+				result["pos"].z = float(coords[2]) if coords.size() > 2 else 0
+		
+		elif "=" in param:
+			# key=value 形式
+			var kv = param.split("=", true, 1)
+			var key = kv[0]
+			var val = kv[1]
+			
+			match key:
+				"scale": result["scale"] = float(val)
+				"time": result["time"] = int(val)
+				"layer": result["layer"] = int(val)
+				"wait": result["wait"] = (val.to_lower() == "true")
+				"reflect": result["reflect"] = (val.to_lower() == "true")
+	
+	return result
+	
 func _parse_bgm_command(parts: Array) -> Dictionary:
 	var result = {
 		"type": "bgm",

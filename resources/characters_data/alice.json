@@ -7,16 +7,25 @@
 	"nicknames": [
 		"アリちゃん"
 	],
+	"parts_order": [
+		"eyebrows",
+		"eyes",
+		"mouth",
+		"extra"
+	],
 	"portrait_offset": {
 		"x": 0.0,
 		"y": 0.0
 	},
-	"portrait_scale": 1.0,
+	"portrait_scale": 1.4,
 	"portraits": {
 		"angry": {
-			"base_image": "res://resources/characters/alice_base.png",
+			"base_image": "res://resources/characters/alice_normal.png",
 			"layer_offsets": {
-
+				"eyebrows": {
+					"x": -11.0,
+					"y": 4.0
+				}
 			},
 			"layers": {
 				"eyebrows": "res://resources/characters/alice_normal.png",

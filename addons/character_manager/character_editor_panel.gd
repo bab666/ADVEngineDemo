@@ -15,7 +15,7 @@ var refresh_button: Button
 @onready var scale_spin: SpinBox = $HSplitContainer/LeftPanel/VBox/Settings/Scale
 @onready var mirror_check: CheckBox = $HSplitContainer/LeftPanel/VBox/Settings/Mirror
 
-# プレビュー設定 (新規)
+# プレビュー設定
 @onready var bg_select: OptionButton = $HSplitContainer/LeftPanel/VBox/PreviewSettings/BgSelect
 
 # ポートレートリスト
@@ -29,17 +29,24 @@ var refresh_button: Button
 @onready var layers_container: VBoxContainer = $HSplitContainer/LeftPanel/VBox/PortraitEdit/Layers
 
 # プレビュー
-@onready var preview_viewport: SubViewport = $HSplitContainer/RightPanel/Preview/SubViewport
-@onready var preview_display: Node2D = $HSplitContainer/RightPanel/Preview/SubViewport/CharacterDisplay
-@onready var background_preview: Sprite2D = $HSplitContainer/RightPanel/Preview/SubViewport/BackgroundPreview
-@onready var guide_frame: ReferenceRect = $HSplitContainer/RightPanel/Preview/SubViewport/GuideFrame
-@onready var preview_camera: Camera2D = $HSplitContainer/RightPanel/Preview/SubViewport/Camera2D
+@onready var preview_viewport: SubViewport = $HSplitContainer/RightPanel/VBox/Preview/SubViewport
+@onready var preview_display: Node2D = $HSplitContainer/RightPanel/VBox/Preview/SubViewport/CharacterDisplay
+@onready var background_preview: Sprite2D = $HSplitContainer/RightPanel/VBox/Preview/SubViewport/BackgroundPreview
+@onready var guide_frame: ReferenceRect = $HSplitContainer/RightPanel/VBox/Preview/SubViewport/GuideFrame
+@onready var preview_camera: Camera2D = $HSplitContainer/RightPanel/VBox/Preview/SubViewport/Camera2D
+
+# ズームツールバー
+@onready var zoom_in_btn: Button = $HSplitContainer/RightPanel/VBox/ToolBar/ZoomIn
+@onready var zoom_out_btn: Button = $HSplitContainer/RightPanel/VBox/ToolBar/ZoomOut
+@onready var zoom_reset_btn: Button = $HSplitContainer/RightPanel/VBox/ToolBar/ZoomReset
+@onready var zoom_label: Label = $HSplitContainer/RightPanel/VBox/ToolBar/ZoomLabel
 
 # --- 変数 ---
 var current_character: CharacterData
 var current_portrait_name: String = ""
 var file_dialog: FileDialog
 var _is_updating_ui: bool = false
+var _current_zoom: float = 1.0
 
 const DATA_DIR = "res://resources/characters_data/"
 const BG_DIR = "res://resources/backgrounds/"
@@ -53,7 +60,7 @@ func _ready():
 	current_character.character_id = "preview_char"
 	
 	_refresh_character_list()
-	_refresh_background_list() # 背景リスト更新
+	_refresh_background_list()
 	
 	portraits_list.select_mode = ItemList.SELECT_SINGLE
 	print("Character Editor Ready")
@@ -116,13 +123,39 @@ func _connect_signals():
 	
 	_safe_connect(portrait_name_input.text_changed, _on_portrait_name_changed)
 	_safe_connect(base_image_button.pressed, _on_select_base_image)
+	
+	# ズーム機能
+	_safe_connect(zoom_in_btn.pressed, _on_zoom_in)
+	_safe_connect(zoom_out_btn.pressed, _on_zoom_out)
+	_safe_connect(zoom_reset_btn.pressed, _on_zoom_reset)
 
 func _safe_connect(signal_obj: Signal, method: Callable):
 	if signal_obj.is_connected(method):
 		signal_obj.disconnect(method)
 	signal_obj.connect(method)
 
-# --- 背景機能 (新規追加) ---
+# --- ズーム機能 ---
+
+func _on_zoom_in():
+	_current_zoom += 0.1
+	_update_zoom()
+
+func _on_zoom_out():
+	_current_zoom -= 0.1
+	if _current_zoom < 0.1: _current_zoom = 0.1
+	_update_zoom()
+
+func _on_zoom_reset():
+	_current_zoom = 1.0
+	_update_zoom()
+
+func _update_zoom():
+	if preview_camera:
+		preview_camera.zoom = Vector2(_current_zoom, _current_zoom)
+	if zoom_label:
+		zoom_label.text = "Zoom: %d%%" % int(_current_zoom * 100)
+
+# --- 背景機能 ---
 
 func _refresh_background_list():
 	bg_select.clear()
@@ -153,12 +186,9 @@ func _on_background_selected(index: int):
 		if ResourceLoader.exists(bg_path):
 			var tex = load(bg_path)
 			background_preview.texture = tex
-			print("背景プレビュー: ", bg_path, " サイズ: ", tex.get_size())
-			
-			# 画像が4K (3840x2160) 以上の場合、4Kの赤枠を表示
+			# 4Kサイズ以上ならガイド枠を表示
 			if tex.get_width() >= 3840 or tex.get_height() >= 2160:
 				guide_frame.visible = true
-				print("-> 4Kサイズガイドを表示します")
 		else:
 			push_warning("背景画像が見つかりません: " + bg_path)
 
@@ -272,23 +302,49 @@ func _load_portrait_to_editor(p_name: String):
 
 func _refresh_layers_ui(portrait):
 	for child in layers_container.get_children(): child.queue_free()
-	var layer_names = ["eyebrows", "eyes", "mouth", "extra"]
-	for layer_name in layer_names:
+	
+	# データから順序を取得。なければデフォルト
+	var order = current_character.parts_order
+	if order.is_empty():
+		order = ["eyebrows", "eyes", "mouth", "extra"]
+		current_character.parts_order = order
+	
+	for i in range(order.size()):
+		var layer_name = order[i]
 		var current_path = portrait.layers.get(layer_name, "")
+		
 		var current_offset = Vector2.ZERO
 		if "layer_offsets" in portrait and portrait.layer_offsets.has(layer_name):
 			current_offset = portrait.layer_offsets[layer_name]
 		
 		var hbox = HBoxContainer.new()
 		layers_container.add_child(hbox)
-		var label = Label.new(); label.text = layer_name.capitalize(); label.custom_minimum_size = Vector2(80, 0); hbox.add_child(label)
 		
+		# 順序変更ボタン [↑][↓]
+		var btn_up = Button.new(); btn_up.text = "↑"
+		btn_up.disabled = (i == 0)
+		btn_up.pressed.connect(func(): _move_layer_order(i, -1))
+		hbox.add_child(btn_up)
+		
+		var btn_down = Button.new(); btn_down.text = "↓"
+		btn_down.disabled = (i == order.size() - 1)
+		btn_down.pressed.connect(func(): _move_layer_order(i, 1))
+		hbox.add_child(btn_down)
+		
+		# ラベル
+		var label = Label.new()
+		label.text = layer_name.capitalize()
+		label.custom_minimum_size = Vector2(80, 0)
+		hbox.add_child(label)
+		
+		# 画像選択
 		var button = Button.new()
 		button.text = current_path.get_file() if not current_path.is_empty() else "Select..."
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.pressed.connect(_on_select_layer.bind(layer_name))
 		hbox.add_child(button)
 		
+		# 位置調整 (X, Y) - 既存コードと同じ
 		var x_spin = SpinBox.new(); x_spin.prefix = "x:"; x_spin.min_value = -1000; x_spin.max_value = 1000; x_spin.step = 1.0
 		x_spin.value = current_offset.x; x_spin.custom_minimum_size = Vector2(70, 0)
 		x_spin.value_changed.connect(func(val): _on_layer_offset_changed(layer_name, val, true))
@@ -298,6 +354,19 @@ func _refresh_layers_ui(portrait):
 		y_spin.value = current_offset.y; y_spin.custom_minimum_size = Vector2(70, 0)
 		y_spin.value_changed.connect(func(val): _on_layer_offset_changed(layer_name, val, false))
 		hbox.add_child(y_spin)
+
+# レイヤー順序移動処理
+func _move_layer_order(index: int, direction: int):
+	var order = current_character.parts_order
+	var target_index = index + direction
+	
+	if target_index >= 0 and target_index < order.size():
+		var temp = order[index]
+		order[index] = order[target_index]
+		order[target_index] = temp
+		
+		# UI更新
+		_load_portrait_to_editor(current_portrait_name)
 
 func _on_select_layer(layer_name: String):
 	_open_file_dialog("*.png, *.jpg ; Images", func(path):
@@ -329,8 +398,8 @@ func _update_preview():
 	preview_display.clear_all()
 	preview_display.set_character_data_direct(current_character)
 	
-	# 中央(960, 540) に表示
-	preview_display.show_character(display_id, current_portrait_name, 960, 540)
+	# 4K中央 (1920, 1080) に表示
+	preview_display.show_character(display_id, current_portrait_name, 1920, 1080)
 
 func save_character():
 	if current_character.character_id.is_empty():

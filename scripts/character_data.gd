@@ -13,6 +13,10 @@ class_name CharacterData
 @export var portrait_offset: Vector2 = Vector2.ZERO
 @export var mirror: bool = false
 
+# パーツの描画順序 (下から順)
+@export var parts_order: Array = ["eyebrows", "eyes", "mouth", "extra"]
+
+
 # 表情定義（ポートレート名 -> ポートレート設定）
 @export var portraits: Dictionary = {}
 
@@ -62,6 +66,7 @@ func to_json() -> String:
 		"portrait_scale": portrait_scale,
 		"portrait_offset": {"x": portrait_offset.x, "y": portrait_offset.y},
 		"mirror": mirror,
+		"parts_order": parts_order,
 		"portraits": {}
 	}
 	
@@ -100,6 +105,10 @@ static func from_json(json_string: String) -> CharacterData:
 	char_data.portrait_offset = Vector2(offset_data.x, offset_data.y)
 	char_data.mirror = data.get("mirror", false)
 	
+	var raw_order = data.get("parts_order", [])
+	if raw_order is Array and not raw_order.is_empty():
+		char_data.parts_order = raw_order
+
 	var portraits_data = data.get("portraits", {})
 	for key in portraits_data.keys():
 		char_data.portraits[key] = PortraitData.from_dict(portraits_data[key])
