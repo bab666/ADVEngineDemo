@@ -5,7 +5,7 @@ func get_command_name() -> String:
 	return "chara"
 
 func get_description() -> String:
-	return "キャラ表示: @chara id expression [pos:x,y,z] [time=ms]..."
+	return "キャラ表示: @chara id expression [src=data_id] [pos:x,y] [time=ms]..."
 
 func execute(params: Dictionary, context: Dictionary) -> void:
 	var char_id = params.get("id", "")
@@ -21,17 +21,14 @@ func execute(params: Dictionary, context: Dictionary) -> void:
 	# ★修正: 拡張メソッド show_character_ex を呼び出す
 	var tween = display.show_character_ex(char_id, expression, params)
 	
-	print("Chara表示: %s %s" % [char_id, expression])
+	print("Chara表示: %s %s params=%s" % [char_id, expression, params])
 	
-	# wait処理 (簡易版)
+	# wait処理 (簡易版: 指定時間待つ)
 	var wait = params.get("wait", true)
 	var time = params.get("time", 1000)
 	
 	if wait and time > 0:
-		# シナリオ進行を待たせるためにタイマー待機
 		await display.get_tree().create_timer(time / 1000.0).timeout
 
 func requires_wait() -> bool:
-	return false 
-	# execute内でawaitしているので、システム側の待機はfalseにしておく
-	# (システム側で待機させたい場合は true に戻して execute を即終了させる設計変更が必要)
+	return false

@@ -17,7 +17,7 @@
 		"x": 0.0,
 		"y": 0.0
 	},
-	"portrait_scale": 1.4,
+	"portrait_scale": 1.05,
 	"portraits": {
 		"angry": {
 			"base_image": "res://resources/characters/alice_normal.png",
@@ -35,7 +35,7 @@
 			"name": "angry"
 		},
 		"normal": {
-			"base_image": "res://resources/characters/alice_base.png",
+			"base_image": "res://resources/characters/alice_normal.png",
 			"layer_offsets": {
 
 			},

@@ -45,7 +45,7 @@ func _parse_command(line: String) -> Dictionary:
 		"bg":
 			return {"type": "bg", "image": parts[1] if parts.size() > 1 else ""}
 		"chara":
-			# ★修正: 専用の解析関数を使用
+			# ★修正: 高機能パーサーを使用
 			return _parse_chara_command(parts)
 		"chara_hide":
 			return {"type": "chara_hide", "id": parts[1] if parts.size() > 1 else ""}
@@ -57,24 +57,26 @@ func _parse_command(line: String) -> Dictionary:
 			return _parse_stop_command(parts, "se")
 	return {}
 
-# ★新規追加: キャラクターコマンド解析
+# ★重要: キャラクターコマンド解析 (src, pos:auto, wait などに対応)
 func _parse_chara_command(parts: Array) -> Dictionary:
 	var result = {
 		"type": "chara",
-		"id": parts[1] if parts.size() > 1 else "",
-		"expression": parts[2] if parts.size() > 2 else "",
+		"id": parts[1] if parts.size() > 1 else "",        # 表示用ID (管理ID)
+		"expression": parts[2] if parts.size() > 2 else "", # 表情
+		"source_id": "",                                    # データ元ID (未指定なら id と同じ)
 		"pos_mode": "auto",
 		"pos": Vector3.ZERO,
 		"scale": null,
 		"time": 1000,
 		"layer": 1,
 		"wait": true,
-		"reflect": false,
-		"source_id": "" # ★追加: データ元のID（指定がない場合は id と同じ）
+		"reflect": false
 	}
-# 初期状態では source_id は id と同じにする
+	
+	# 初期状態では source_id は id と同じにする
 	result["source_id"] = result["id"]
 	
+	# 3番目以降の引数を解析
 	for i in range(3, parts.size()):
 		var param = parts[i]
 		
@@ -95,7 +97,7 @@ func _parse_chara_command(parts: Array) -> Dictionary:
 			var val = kv[1]
 			
 			match key:
-				"src": result["source_id"] = val # ★追加: src=ai のように指定
+				"src": result["source_id"] = val # ★追加: データ元指定 (例: src=ai)
 				"scale": result["scale"] = float(val)
 				"time": result["time"] = int(val)
 				"layer": result["layer"] = int(val)

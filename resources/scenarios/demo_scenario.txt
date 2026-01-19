@@ -2,52 +2,23 @@
 # 新機能テストシナリオ
 
 # 背景設定
-@bg room_day
+@bg room
 
+# 同時表示テスト
+
+# 1. 異なるキャラの同時表示
+# IDが違うので、wait=false なら同時に出ます
+@chara ai normal pos:500,900 wait=false
+@chara alice normal pos:1400,900 wait=true
+ai: 私とアリスちゃん、同時に表示されていますか？
+
+# 2. 同じキャラの分身表示 (src指定)
 @chara_hide ai
 @chara_hide alice
 
-# 2人同時表示テスト
-@chara ai smile pos:500,900 wait=false
-@chara alice normal pos:400,900 
-ai: 私たちは同時に表示されています！
-
-
-# 1. 基本表示と自動配置 (pos:auto)
-# 中央にフェードイン (デフォルト time=1000)
-@chara ai normal pos:auto
-ai: こんにちは！これは通常の表示テストです。
-ai: 画面の中央（pos:auto）に表示されています。
-
-# 2. 拡大縮小と反転 (scale, reflect)
-# 一度隠す
-@chara_hide ai
-# 拡大(1.5倍)して、左右反転して表示
-@chara ai smile pos:auto scale=1.5 reflect=true time=500
-ai: 今は1.5倍の大きさで、左右反転しています。
-ai: フェードイン時間は0.5秒（time=500）でした。
-
-# 3. 具体的な位置指定 (pos:x,y)
-@chara_hide ai
-# 左側に配置
-@chara ai angry pos:500,800 scale=1.0 reflect=false
-ai: 座標(500, 800)に移動しました。
-ai: scaleとreflectは元に戻しています。
-
-# 4. 演出待ちの制御 (wait=false)
-@chara_hide ai
-# wait=false を使うと、フェードインを待たずに次の行へ進みます
-# これにより、複数のキャラを同時に登場させたりできます
-# (ここではテスト用に同じキャラを座標を変えて連打します)
-
-# 左から
-@chara ai normal pos:400,800 time=2000 wait=false
-# 右から
-@chara ai_copy smile src=ai pos:1500,800 time=2000 reflect=true wait=true
-
-ai: 今、2つの立ち絵が同時にフェードインしたはずです。
-ai: 最後のコマンドだけ wait=true にすることで、完了を待ってからこのセリフが出ています。
-
-# 終了
-@chara_hide ai
-ai: これで機能テストを終了します。
+# メインの ai
+@chara ai angry pos:500,900
+# 分身の ai (IDを変えて、srcでデータを指定)
+@chara ai_clone smile src=ai pos:1400,900 scale=0.8 layer=2
+ai: 右にいるのは、私の分身（ai_clone）です。
+ai: IDを変えれば、同じキャラでも何人でも出せます。

@@ -2,3 +2,5 @@ res://scenes/title.tscn
 res://resources/characters_data/ai.json
 res://scripts/scenario_manager.gd
 res://resources/scenarios/demo_scenario.txt
+res://scripts/character_display.gd
+res://scripts/commands/chara_command.gd
