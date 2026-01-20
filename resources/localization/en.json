@@ -1,0 +1,104 @@
+{
+	"Characters": {
+		"unknown": "???"
+	},
+	"Collection": {
+		"cg_gallery": "CG Gallery",
+		"completion_rate": "Completion: {0}%",
+		"locked": "Locked",
+		"music": "Music",
+		"tips": "Tips",
+		"title": "Collection",
+		"unlocked": "Unlocked"
+	},
+	"Common": {
+		"cancel": "Cancel",
+		"close": "Close",
+		"next": "Next",
+		"ok": "OK",
+		"page": "Page {0}/{1}",
+		"previous": "Previous"
+	},
+	"GameUI": {
+		"auto": "Auto",
+		"config": "Config",
+		"hide_ui": "Hide UI",
+		"load": "Load",
+		"log": "Log",
+		"save": "Save",
+		"skip": "Skip",
+		"title": "Title"
+	},
+	"Load": {
+		"confirm_load": "Load this save?",
+		"no_data": "No save data",
+		"title": "Load"
+	},
+	"Messages": {
+		"load_complete": "Load completed",
+		"load_failed": "Load failed",
+		"return_to_title": "Return to title?\nUnsaved progress will be lost.",
+		"save_complete": "Save completed",
+		"save_failed": "Save failed"
+	},
+	"Save": {
+		"confirm_overwrite": "Overwrite?",
+		"empty": "No Data",
+		"no": "No",
+		"save_date": "{0}/{1}/{2} {3}:{4}",
+		"slot": "Slot {0}",
+		"title": "Save",
+		"yes": "Yes"
+	},
+	"Scenario": {
+		"farewell": "See you again",
+		"greeting": "Hello!",
+		"narrator": "Narration",
+		"player_name": "Hero",
+		"system_voice": "System",
+		"tips1": "TIPS: <color=cyan>This is a sample TIPS</color>",
+		"tips2": "TIPS: <b>Bold text is also available</b>",
+		"unknown_person": "???"
+	},
+	"Settings": {
+		"apply": "Apply",
+		"auto_speed": "Auto Speed",
+		"back": "Back",
+		"bgm_volume": "BGM Volume",
+		"fullscreen": "Fullscreen",
+		"language": "Language",
+		"reset": "Reset",
+		"se_volume": "SE Volume",
+		"text_speed": "Text Speed",
+		"title": "Settings",
+		"voice_volume": "Voice Volume",
+		"volume": "Volume",
+		"window_opacity": "Window Opacity"
+	},
+	"System": {
+		"confirm": "Confirm",
+		"error": "Error",
+		"info": "Info",
+		"now_loading": "Now Loading...",
+		"now_saving": "Saving...",
+		"warning": "Warning"
+	},
+	"Tips": {
+		"category": "Category",
+		"new": "NEW",
+		"unread": "Unread"
+	},
+	"Title": {
+		"continue": "Continue",
+		"quit": "Quit",
+		"settings": "Settings",
+		"start_game": "Start Game",
+		"title": "Title"
+	},
+	"_metadata": {
+		"language": "英語 (English)",
+		"language_code": "en",
+		"last_updated": "2026-01-20T13:28:50",
+		"version": "1.0.0"
+	}
+}

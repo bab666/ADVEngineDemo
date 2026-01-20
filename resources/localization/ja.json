@@ -1,0 +1,116 @@
+{
+	"_metadata": {
+		"language": "Japanese",
+		"language_code": "ja",
+		"version": "1.0.0",
+		"last_updated": "2025-01-20"
+	},
+	
+	"Title": {
+		"title": "タイトル",
+		"start_game": "初めから",
+		"continue": "続きから",
+		"settings": "設定",
+		"quit": "終了"
+	},
+	
+	"Settings": {
+		"title": "設定",
+		"language": "言語",
+		"volume": "音量",
+		"bgm_volume": "BGM音量",
+		"se_volume": "SE音量",
+		"voice_volume": "ボイス音量",
+		"text_speed": "テキスト速度",
+		"auto_speed": "オート速度",
+		"window_opacity": "ウィンドウ透明度",
+		"fullscreen": "フルスクリーン",
+		"back": "戻る",
+		"apply": "適用",
+		"reset": "初期化"
+	},
+	
+	"GameUI": {
+		"save": "セーブ",
+		"load": "ロード",
+		"auto": "オート",
+		"skip": "スキップ",
+		"log": "ログ",
+		"config": "設定",
+		"title": "タイトルへ",
+		"hide_ui": "UI非表示"
+	},
+	
+	"Save": {
+		"title": "セーブ",
+		"slot": "スロット {0}",
+		"empty": "データなし",
+		"save_date": "{0}年{1}月{2}日 {3}:{4}",
+		"confirm_overwrite": "上書きしますか？",
+		"yes": "はい",
+		"no": "いいえ"
+	},
+	
+	"Load": {
+		"title": "ロード",
+		"no_data": "セーブデータがありません",
+		"confirm_load": "ロードしますか？"
+	},
+	
+	"System": {
+		"now_loading": "読み込み中...",
+		"now_saving": "保存中...",
+		"error": "エラー",
+		"warning": "警告",
+		"info": "情報",
+		"confirm": "確認"
+	},
+	
+	"Messages": {
+		"save_complete": "セーブが完了しました",
+		"load_complete": "ロードが完了しました",
+		"save_failed": "セーブに失敗しました",
+		"load_failed": "ロードに失敗しました",
+		"return_to_title": "タイトルに戻りますか？\n未保存のデータは失われます。"
+	},
+	
+	"Collection": {
+		"title": "コレクション",
+		"cg_gallery": "CG鑑賞",
+		"tips": "TIPS一覧",
+		"music": "音楽鑑賞",
+		"unlocked": "解放済み",
+		"locked": "未解放",
+		"completion_rate": "達成率: {0}%"
+	},
+	
+	"Tips": {
+		"new": "NEW",
+		"unread": "未読",
+		"category": "カテゴリ"
+	},
+	
+	"Characters": {
+		"unknown": "???"
+	},
+	
+	"Common": {
+		"ok": "OK",
+		"cancel": "キャンセル",
+		"close": "閉じる",
+		"next": "次へ",
+		"previous": "前へ",
+		"page": "ページ {0}/{1}"
+	},
+	
+	"Scenario": {
+		"player_name": "主人公",
+		"unknown_person": "？？？",
+		"system_voice": "システム",
+		"narrator": "ナレーション",
+		"tips1": "TIPS：<color=cyan>これはサンプルTIPSです</color>",
+		"tips2": "TIPS：<b>太字も使えます</b>",
+		"greeting": "こんにちは！",
+		"farewell": "また会いましょう"
+	}
+}

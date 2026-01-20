@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://vbatcogmvafw"]
+[gd_scene load_steps=5 format=3 uid="uid://vbatcogmvafw"]
 
 [ext_resource type="Script" uid="uid://l7m7cath3p8p" path="res://scripts/title.gd" id="1_8x7y8"]
+[ext_resource type="Script" uid="uid://b4lbsluq2hf5b" path="res://scripts/ui/localized_button.gd" id="2_p6dhs"]
+[ext_resource type="Script" uid="uid://y51x5mbdmdhc" path="res://scripts/ui/localized_label.gd" id="2_pyl7j"]
 [ext_resource type="Script" uid="uid://d26ekornmr3gu" path="res://scripts/audio_manager.gd" id="2_wosw1"]
 
 [node name="Title" type="Control"]
@@ -29,11 +31,14 @@ anchor_right = 0.5
 offset_left = -400.0
 offset_top = 400.0
 offset_right = 400.0
-offset_bottom = 550.0
+offset_bottom = 565.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 120
-text = "ADV Demo"
+text = "[Title.title]"
 horizontal_alignment = 1
+script = ExtResource("2_pyl7j")
+translation_key = "Title.title"
+metadata/_custom_type_script = "uid://y51x5mbdmdhc"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -55,25 +60,37 @@ alignment = 1
 custom_minimum_size = Vector2(600, 100)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
-text = "はじめから"
+text = "[TItle.start_game]"
+script = ExtResource("2_p6dhs")
+translation_key = "TItle.start_game"
+metadata/_custom_type_script = "uid://b4lbsluq2hf5b"
 
 [node name="LoadButton" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(600, 100)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
-text = "つづきから"
+text = "[TItle.continue]"
+script = ExtResource("2_p6dhs")
+translation_key = "TItle.continue"
+metadata/_custom_type_script = "uid://b4lbsluq2hf5b"
 
 [node name="ConfigButton" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(600, 100)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
-text = "設定"
+text = "[TItle.settings]"
+script = ExtResource("2_p6dhs")
+translation_key = "TItle.settings"
+metadata/_custom_type_script = "uid://b4lbsluq2hf5b"
 
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(600, 100)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
-text = "終了"
+text = "[TItle.quit]"
+script = ExtResource("2_p6dhs")
+translation_key = "TItle.quit"
+metadata/_custom_type_script = "uid://b4lbsluq2hf5b"
 
 [node name="Node" type="Node" parent="."]
 script = ExtResource("2_wosw1")

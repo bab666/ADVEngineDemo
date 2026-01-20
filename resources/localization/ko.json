@@ -1,0 +1,104 @@
+{
+	"Characters": {
+		"unknown": "[TO TRANSLATE] ???"
+	},
+	"Collection": {
+		"cg_gallery": "[TO TRANSLATE] CG鑑賞",
+		"completion_rate": "[TO TRANSLATE] 達成率: {0}%",
+		"locked": "[TO TRANSLATE] 未解放",
+		"music": "[TO TRANSLATE] 音楽鑑賞",
+		"tips": "[TO TRANSLATE] TIPS一覧",
+		"title": "[TO TRANSLATE] コレクション",
+		"unlocked": "[TO TRANSLATE] 解放済み"
+	},
+	"Common": {
+		"cancel": "[TO TRANSLATE] キャンセル",
+		"close": "[TO TRANSLATE] 閉じる",
+		"next": "[TO TRANSLATE] 次へ",
+		"ok": "[TO TRANSLATE] OK",
+		"page": "[TO TRANSLATE] ページ {0}/{1}",
+		"previous": "[TO TRANSLATE] 前へ"
+	},
+	"GameUI": {
+		"auto": "[TO TRANSLATE] オート",
+		"config": "[TO TRANSLATE] 設定",
+		"hide_ui": "[TO TRANSLATE] UI非表示",
+		"load": "[TO TRANSLATE] ロード",
+		"log": "[TO TRANSLATE] ログ",
+		"save": "[TO TRANSLATE] セーブ",
+		"skip": "[TO TRANSLATE] スキップ",
+		"title": "[TO TRANSLATE] タイトルへ"
+	},
+	"Load": {
+		"confirm_load": "[TO TRANSLATE] ロードしますか？",
+		"no_data": "[TO TRANSLATE] セーブデータがありません",
+		"title": "[TO TRANSLATE] ロード"
+	},
+	"Messages": {
+		"load_complete": "[TO TRANSLATE] ロードが完了しました",
+		"load_failed": "[TO TRANSLATE] ロードに失敗しました",
+		"return_to_title": "[TO TRANSLATE] タイトルに戻りますか？\n未保存のデータは失われます。",
+		"save_complete": "[TO TRANSLATE] セーブが完了しました",
+		"save_failed": "[TO TRANSLATE] セーブに失敗しました"
+	},
+	"Save": {
+		"confirm_overwrite": "[TO TRANSLATE] 上書きしますか？",
+		"empty": "[TO TRANSLATE] データなし",
+		"no": "[TO TRANSLATE] いいえ",
+		"save_date": "[TO TRANSLATE] {0}年{1}月{2}日 {3}:{4}",
+		"slot": "[TO TRANSLATE] スロット {0}",
+		"title": "[TO TRANSLATE] セーブ",
+		"yes": "[TO TRANSLATE] はい"
+	},
+	"Scenario": {
+		"farewell": "[TO TRANSLATE] また会いましょう",
+		"greeting": "[TO TRANSLATE] こんにちは！",
+		"narrator": "[TO TRANSLATE] ナレーション",
+		"player_name": "[TO TRANSLATE] 主人公",
+		"system_voice": "[TO TRANSLATE] システム",
+		"tips1": "[TO TRANSLATE] TIPS：<color=cyan>これはサンプルTIPSです</color>",
+		"tips2": "[TO TRANSLATE] TIPS：<b>太字も使えます</b>",
+		"unknown_person": "[TO TRANSLATE] ？？？"
+	},
+	"Settings": {
+		"apply": "[TO TRANSLATE] 適用",
+		"auto_speed": "[TO TRANSLATE] オート速度",
+		"back": "[TO TRANSLATE] 戻る",
+		"bgm_volume": "[TO TRANSLATE] BGM音量",
+		"fullscreen": "[TO TRANSLATE] フルスクリーン",
+		"language": "[TO TRANSLATE] 言語",
+		"reset": "[TO TRANSLATE] 初期化",
+		"se_volume": "[TO TRANSLATE] SE音量",
+		"text_speed": "[TO TRANSLATE] テキスト速度",
+		"title": "[TO TRANSLATE] 設定",
+		"voice_volume": "[TO TRANSLATE] ボイス音量",
+		"volume": "[TO TRANSLATE] 音量",
+		"window_opacity": "[TO TRANSLATE] ウィンドウ透明度"
+	},
+	"System": {
+		"confirm": "[TO TRANSLATE] 確認",
+		"error": "[TO TRANSLATE] エラー",
+		"info": "[TO TRANSLATE] 情報",
+		"now_loading": "[TO TRANSLATE] 読み込み中...",
+		"now_saving": "[TO TRANSLATE] 保存中...",
+		"warning": "[TO TRANSLATE] 警告"
+	},
+	"Tips": {
+		"category": "[TO TRANSLATE] カテゴリ",
+		"new": "[TO TRANSLATE] NEW",
+		"unread": "[TO TRANSLATE] 未読"
+	},
+	"Title": {
+		"continue": "[TO TRANSLATE] 続きから",
+		"quit": "[TO TRANSLATE] 終了",
+		"settings": "[TO TRANSLATE] 設定",
+		"start_game": "[TO TRANSLATE] 初めから",
+		"title": "[TO TRANSLATE] タイトル"
+	},
+	"_metadata": {
+		"language": "韓国語 (한국어)",
+		"language_code": "ko",
+		"last_updated": "2026-01-20T13:28:50",
+		"version": "1.0.0"
+	}
+}

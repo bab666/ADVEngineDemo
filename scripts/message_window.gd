@@ -67,7 +67,10 @@ func show_dialogue(character_name: String, text: String):
 		name_label.visible = not character_name.is_empty()
 	
 	if text_label:
-		current_text = text
+		# 翻訳ラベルを解析（{T_key} 形式）
+		var parsed_text: String = LocalizationManager.parse_scenario_text(text)
+		
+		current_text = parsed_text
 		text_label.text = current_text # BBCode解析のため一度全セット
 		text_label.visible_characters = 0 # 表示文字数を0に
 		visible_characters = 0

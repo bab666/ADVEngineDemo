@@ -1,0 +1,42 @@
+# 翻訳ラベルテストシナリオ
+# {T_key} 形式で翻訳ラベルを使用できます
+
+@bg room
+@chara ai normal
+
+# 基本的な使用方法
+ai: これから翻訳ラベルのテストを始めます。
+
+# カテゴリ省略形式: {T_greeting}
+ai: {T_greeting}
+
+# BBCode装飾付き
+ai: {T_tips1}
+ai: {T_tips2}
+
+# 複数のラベルを組み合わせ
+ai: {T_greeting} 私は{T_player_name}です。
+
+# 通常テキストとラベルの混在
+ai: こんにちは！私の名前は{T_player_name}と言います。
+
+@chara alice normal
+alice: 私も挨拶します。{T_greeting}
+
+# システムメッセージ
+{T_narrator}: これは{T_narrator}の声です。
+{T_system_voice}: {T_now_loading}
+
+# 別れの挨拶
+ai: それでは、{T_farewell}
+alice: {T_farewell}
+
+# このシナリオで使用した翻訳ラベル:
+# - greeting (こんにちは！ / Hello!)
+# - tips1 (サンプルTIPS with BBCode)
+# - tips2 (太字のサンプル with BBCode)
+# - player_name (主人公 / Hero)
+# - narrator (ナレーション / Narration)
+# - system_voice (システム / System)
+# - now_loading (読み込み中... / Now Loading...)
+# - farewell (また会いましょう / See you again)
