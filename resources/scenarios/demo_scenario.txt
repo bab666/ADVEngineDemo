@@ -1,4 +1,8 @@
 # D:\Works\Godot\spelLDemo\resources\scenarios\demo_scenario.txt
+
+@goto save_test
+
+
 # カメラテスト
 @bg room
 @chara ai normal

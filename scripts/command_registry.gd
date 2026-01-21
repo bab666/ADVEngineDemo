@@ -34,6 +34,18 @@ func register_builtin_commands():
 	register_command(SyncCommand.new())
 	# 演出コマンド
 	register_command(CameraCommand.new())
+	register_command(KillCommand.new())
+	
+	# 変数・条件分岐コマンド
+	register_command(SetCommand.new())
+	register_command(IfCommand.new())
+	register_command(ElifCommand.new())
+	register_command(ElseCommand.new())
+	register_command(EndifCommand.new())
+	
+	# セーブ・ロードコマンド
+	register_command(SaveCommand.new())
+	register_command(LoadCommand.new())
 
 	print("=== 登録されたコマンド一覧 ===")
 	for key in commands.keys():

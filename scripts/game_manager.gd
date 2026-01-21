@@ -7,6 +7,7 @@ extends Node
 @onready var camera: Camera2D = $Camera2D
 
 var window_manager: WindowManager
+var save_manager: SaveManager  # ★追加
 var command_context: Dictionary = {}
 var wait_tween: Tween
 var is_scenario_paused: bool = false
@@ -24,6 +25,12 @@ func _ready():
 		window_manager.name = "WindowManager"
 		add_child(window_manager)
 	
+	# ★SaveManagerの初期化
+	save_manager = SaveManager.new()
+	save_manager.name = "SaveManager"
+	save_manager.game_manager = self
+	add_child(save_manager)
+	
 	if has_node("UI/MessageWindow"): $UI/MessageWindow.hide()
 	
 	command_context = {
@@ -33,7 +40,8 @@ func _ready():
 		"scenario_manager": scenario_manager,
 		"game_manager": self,
 		"command_registry": command_registry,
-		"camera": camera
+		"camera": camera,
+		"save_manager": save_manager  # ★追加
 	}
 	
 	if scenario_manager == null: return
@@ -180,3 +188,44 @@ func run_sequence(commands: Array, id: String = ""):
 	# タスクとして登録してから開始
 	register_async_task(runner, id)
 	runner.start()
+
+## セーブ・ロード用: カメラ状態の保存・復元
+
+## カメラ状態を取得（セーブ用）
+func get_camera_state() -> Dictionary:
+	if not camera:
+		return {}
+	
+	return {
+		"position": {"x": camera.position.x, "y": camera.position.y},
+		"zoom": {"x": camera.zoom.x, "y": camera.zoom.y},
+		"rotation": camera.rotation_degrees
+	}
+
+## カメラ状態を復元（ロード用）
+func set_camera_state(data: Dictionary) -> void:
+	if data.is_empty() or not camera:
+		return
+	
+	var pos: Dictionary = data.get("position", {"x": 0, "y": 0})
+	var zm: Dictionary = data.get("zoom", {"x": 1, "y": 1})
+	var rot: float = data.get("rotation", 0.0)
+	
+	camera.position = Vector2(pos.x, pos.y)
+	camera.zoom = Vector2(zm.x, zm.y)
+	camera.rotation_degrees = rot
+	
+	# カメラコマンドの「lazy」動作用コンテキストも更新しておく
+	if command_context.has("camera_target_pos"):
+		command_context["camera_target_pos"] = camera.position
+	if command_context.has("camera_target_zoom"):
+		command_context["camera_target_zoom"] = camera.zoom
+	if command_context.has("camera_target_rot"):
+		command_context["camera_target_rot"] = camera.rotation_degrees
+	
+	# アニメーション中はキャンセルさせる
+	if command_context.has("current_tween"):
+		var t = command_context.get("current_tween")
+		if t and t is Tween and t.is_valid():
+			t.kill()
+		command_context["current_tween"] = null

@@ -1,0 +1,120 @@
+# 変数・条件分岐テストシナリオ
+
+@bg room
+@chara ai normal
+
+# === 変数設定のテスト ===
+
+ai: 変数管理システムのテストを開始します。
+
+# 整数変数
+@set count=0
+ai: countを0に設定しました。
+
+# 変数をインクリメント
+@set count=1
+@set count=2
+@set count=3
+
+# 文字列変数
+@set player_name="主人公"
+ai: プレイヤー名を設定しました。
+
+# 真偽値
+@set flag=true
+@set another_flag=false
+
+# === 条件分岐のテスト ===
+
+ai: 次は条件分岐のテストです。
+
+# テスト1: 数値比較
+@if count > 2
+	ai: countは2より大きいです！（正解）
+@else
+	ai: countは2以下です（エラー）
+@endif
+
+# テスト2: 等値比較
+@if count == 3
+	ai: countは3です！（正解）
+@else
+	ai: countは3ではありません（エラー）
+@endif
+
+# テスト3: 真偽値チェック
+@if flag == true
+	ai: フラグが立っています！（正解）
+@else
+	ai: フラグが立っていません（エラー）
+@endif
+
+# テスト4: elif
+@set score=75
+
+@if score >= 90
+	ai: 評価：優秀
+@elif score >= 70
+	ai: 評価：良好（正解）
+@elif score >= 50
+	ai: 評価：普通
+@else
+	ai: 評価：要努力
+@endif
+
+# テスト5: 論理演算
+@set age=20
+@set has_license=true
+
+@if age >= 18 and has_license == true
+	ai: 運転できます！（正解）
+@else
+	ai: 運転できません（エラー）
+@endif
+
+# テスト6: ネストした条件分岐
+@set level=5
+
+@if level > 0
+	ai: レベルチェック開始
+	
+	@if level >= 10
+		ai: レベル：上級
+	@elif level >= 5
+		ai: レベル：中級（正解）
+	@else
+		ai: レベル：初級
+	@endif
+	
+	ai: レベルチェック終了
+@endif
+
+# === システム変数のテスト ===
+
+ai: 次はシステム変数のテストです。
+
+@set s$play_count=1
+ai: プレイ回数を1に設定しました（システム変数）
+
+@if s$play_count == 1
+	ai: 初回プレイです！（正解）
+@else
+	ai: 2回目以降のプレイです
+@endif
+
+# === 変数参照のテスト ===
+
+@set message="こんにちは"
+ai: 変数の値: {T_greeting}
+
+# === まとめ ===
+
+ai: すべてのテストが完了しました！
+ai: 変数システムと条件分岐が正常に動作しています。
+
+# 最終状態の表示
+ai: 最終的な変数の状態：
+ai: count = 3
+ai: score = 75
+ai: level = 5
+ai: flag = true

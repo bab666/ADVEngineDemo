@@ -20,7 +20,10 @@
 		"angry": {
 			"base_image": "res://resources/characters/alice_normal.png",
 			"layer_offsets": {
-
+				"eyebrows": {
+					"x": 0.0,
+					"y": 0.0
+				}
 			},
 			"layers": {
 
@@ -36,6 +39,16 @@
 
 			},
 			"name": "normal"
+		},
+		"portrait_5": {
+			"base_image": "",
+			"layer_offsets": {
+
+			},
+			"layers": {
+
+			},
+			"name": "portrait_5"
 		},
 		"smile": {
 			"base_image": "res://resources/characters/alice_normal.png",

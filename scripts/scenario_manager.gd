@@ -159,6 +159,14 @@ func _parse_command(line: String) -> Dictionary:
 			result = {"type": "stop"}
 		"camera": return _parse_camera_command(parts)
 		"sync": return {"type": "sync"}
+		"kill": return {"type": "kill", "id": parts[1] if parts.size() > 1 else ""}
+		"set": return {"type": "set", "args": " ".join(parts.slice(1))}
+		"if": return {"type": "if", "args": " ".join(parts.slice(1))}
+		"elif": return {"type": "elif", "args": " ".join(parts.slice(1))}
+		"else": return {"type": "else"}
+		"endif": return {"type": "endif"}
+		"save": return {"type": "save", "args": " ".join(parts.slice(1))}
+		"load": return {"type": "load", "args": " ".join(parts.slice(1))}
 	
 	# ★重要: 全コマンドの最後に共通パラメータ解析を実行
 	if not result.is_empty():
@@ -332,3 +340,26 @@ func next_line() -> Dictionary:
 
 func has_next() -> bool:
 	return current_line < current_scenario.size() - 1
+
+## セーブ・ロード用メソッド
+
+## 現在のシナリオ状態を保存
+func save_state() -> Dictionary:
+	return {
+		"current_file": current_file_path,
+		"current_line": current_line,
+		"call_stack": call_stack.duplicate(true)
+	}
+
+## シナリオ状態を復元
+func load_state(data: Dictionary) -> void:
+	var file_path: String = data.get("current_file", "")
+	var line_index: int = data.get("current_line", 0)
+	var stack: Array = data.get("call_stack", [])
+	
+	if not file_path.is_empty():
+		# ファイルをロード（ラベル情報などを再構築）
+		load_scenario(file_path)
+		# 行数を復元
+		current_line = line_index
+		call_stack = stack

@@ -1,3 +1,3 @@
 res://scenes/title.tscn
-res://resources/localization/en.json
-res://resources/localization/es.json
+res://resources/characters_data/ai.json
+res://resources/scenarios/demo_scenario.txt

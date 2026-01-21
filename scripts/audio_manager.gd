@@ -175,3 +175,38 @@ func linear_to_db(linear: float) -> float:
 	if linear <= 0.0:
 		return -80.0
 	return 20.0 * log(linear) / log(10.0)
+
+## セーブ・ロード用メソッド
+
+## 現在のオーディオ状態を保存
+func save_state() -> Dictionary:
+	return {
+		"current_bgm": current_bgm,
+		"bgm_volume": bgm_volume,
+		"se_volume": se_volume,
+		"is_playing": bgm_player.playing,
+		"playback_position": bgm_player.get_playback_position()
+	}
+
+## オーディオ状態を復元
+func load_state(data: Dictionary) -> void:
+	# 音量設定を復元
+	if data.has("bgm_volume"):
+		set_bgm_volume(data.bgm_volume)
+	if data.has("se_volume"):
+		set_se_volume(data.se_volume)
+	
+	var bgm_file: String = data.get("current_bgm", "")
+	var was_playing: bool = data.get("is_playing", false)
+	var position: float = data.get("playback_position", 0.0)
+	
+	# BGM復元
+	if not bgm_file.is_empty() and was_playing:
+		if current_bgm != bgm_file or not bgm_player.playing:
+			play_bgm(bgm_file, 0.0)  # フェードなしで再生
+			# 再生位置を復元（少し待ってから）
+			await get_tree().create_timer(0.05).timeout
+			if bgm_player.playing:
+				bgm_player.seek(position)
+	else:
+		stop_bgm(0.0)

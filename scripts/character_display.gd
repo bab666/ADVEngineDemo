@@ -16,6 +16,12 @@ func set_character_data_direct(char_data: CharacterData):
 
 # --- 高機能表示メソッド ---
 func show_character_ex(char_id: String, expression: String, params: Dictionary) -> Tween:
+	# ★追加: 状態を保存 (paramsは参照渡しされる可能性があるので複製しておく)
+	var state_to_save: Dictionary = params.duplicate(true)
+	state_to_save["id"] = char_id
+	state_to_save["expression"] = expression
+	active_character_states[char_id] = state_to_save
+	
 	# ★重要: データの読み込み元IDを決定 (指定がなければ char_id と同じ)
 	var source_id = params.get("source_id", char_id)
 	
@@ -141,10 +147,15 @@ func _show_simple_character(_id, _exp, _x, _y): pass
 func hide_character(char_id: String):
 	if characters.has(char_id):
 		characters[char_id].hide()
+		# ★追加: 表示状態からも削除
+		if active_character_states.has(char_id):
+			active_character_states.erase(char_id)
 
 func clear_all():
 	for n in characters.values(): n.queue_free()
 	characters.clear()
+	# ★追加: 状態クリア
+	active_character_states.clear()
 	
 # ★新規追加: キャッシュのクリア
 # force=true なら表示中のキャラ以外全てのデータを消す
@@ -165,3 +176,43 @@ func clear_cache(force: bool = false):
 		for id in ids_to_remove:
 			character_data_cache.erase(id)
 			print("Resource Cleared: ", id)
+
+## セーブ・ロード用メソッド
+
+# 追加: 現在の表示状態を保持する辞書 (ID -> パラメータ辞書)
+var active_character_states: Dictionary = {}
+
+## 現在のキャラクター表示状態を保存
+func save_state() -> Dictionary:
+	# 表示中のキャラクターの情報を保存
+	var state: Dictionary = {}
+	
+	for char_id in characters.keys():
+		var char_node: Node2D = characters[char_id]
+		
+		# 表示中のキャラクターのみ保存
+		if char_node.visible:
+			# active_character_statesから情報を取得
+			if active_character_states.has(char_id):
+				state[char_id] = active_character_states[char_id].duplicate(true)
+	
+	return state
+
+## キャラクター表示状態を復元
+func load_state(data: Dictionary) -> void:
+	clear_all()
+	active_character_states.clear()
+	
+	# 保存されたキャラクターを一人ずつ復元
+	for char_id in data.keys():
+		var params: Dictionary = data[char_id].duplicate(true)
+		var expression: String = params.get("expression", "normal")
+		
+		# ロード時はフェードなし(time=0)で即時表示する
+		params["time"] = 0
+		
+		# 再表示実行
+		show_character_ex(char_id, expression, params)
+
+## show_character_exで状態を記録するように修正が必要
+## 既存のshow_character_exメソッドの最初に以下を追加:

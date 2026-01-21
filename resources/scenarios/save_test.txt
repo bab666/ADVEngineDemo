@@ -1,0 +1,34 @@
+# セーブ・ロードテストシナリオ
+
+@bg room
+@chara ai normal
+
+ai: セーブ・ロードシステムのテストを開始します。
+
+# 変数を設定
+@set test_count=1
+@set test_flag=true
+
+ai: 現在、test_count=1、test_flag=trueです。
+
+# ここでオートセーブ
+ai: ここでオートセーブします。
+@save
+
+ai: セーブが完了しました。
+
+# 状態を変更
+@set test_count=999
+@set test_flag=false
+@chara ai angry
+
+ai: 状態を変更しました。test_count=999、test_flag=false、表情=angryです。
+
+ai: この後、オートロードします。元の状態に戻るはずです。
+@wait time=2000
+
+# オートロード
+@load
+
+# ここは実行されない（ロード後は保存時点の次の行から再開される）
+ai: このメッセージは表示されないはずです。
