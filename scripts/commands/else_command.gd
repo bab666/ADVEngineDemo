@@ -5,7 +5,7 @@ class_name ElseCommand
 func get_command_name() -> String:
 	return "else"
 
-func execute(params: Dictionary, context: Dictionary) -> void:
+func execute(_params: Dictionary, _context: Dictionary) -> void:
 	# @else は特に処理不要（到達した時点で実行される）
 	pass
 

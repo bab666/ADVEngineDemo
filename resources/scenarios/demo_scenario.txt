@@ -1,12 +1,11 @@
 # D:\Works\Godot\spelLDemo\resources\scenarios\demo_scenario.txt
-
-@goto save_test
-
+@camera zoom:1.0 offset:0,0 rotation:0 time:0
+@jump save_test
 
 # カメラテスト
 @bg room
 @chara ai normal
-@camera zoom:1.0 offset:0,0 rotation:0 time:0
+
 
 ai: カメラ機能の拡張テストを開始します。
 

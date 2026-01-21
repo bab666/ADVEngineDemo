@@ -1,3 +1,7 @@
+res://scripts/commands/load_command.gd
 res://scenes/title.tscn
-res://resources/characters_data/ai.json
+res://scripts/save_manager.gd
 res://resources/scenarios/demo_scenario.txt
+res://scripts/commands/else_command.gd
+res://scripts/commands/set_command.gd
+res://scripts/commands/endif_command.gd

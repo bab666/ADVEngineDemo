@@ -5,7 +5,7 @@ class_name EndifCommand
 func get_command_name() -> String:
 	return "endif"
 
-func execute(params: Dictionary, context: Dictionary) -> void:
+func execute(_params: Dictionary, _context: Dictionary) -> void:
 	# @endif は終了マーカーとして機能するだけで、特に処理は不要
 	pass
 

@@ -5,7 +5,7 @@ class_name SetCommand
 func get_command_name() -> String:
 	return "set"
 
-func execute(params: Dictionary, context: Dictionary) -> void:
+func execute(params: Dictionary, _context: Dictionary) -> void:
 	var args: String = params.get("args", "")
 	
 	if args.is_empty():
